@@ -2,6 +2,7 @@ node_modules/
 dist/
 .next/
 .open-next/
+apps/web/out/
 *.tsbuildinfo
 .env
 .env.local
