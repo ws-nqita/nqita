@@ -26,7 +26,7 @@ export interface SessionResponse {
 
 function getApiKey(): string {
   if (typeof window === 'undefined') return '';
-  return localStorage.getItem('eral_api_key') ?? '';
+  return localStorage.getItem('eral_token') ?? '';
 }
 
 function buildHeaders(): HeadersInit {

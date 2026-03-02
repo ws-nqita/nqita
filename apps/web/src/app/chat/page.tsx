@@ -11,7 +11,7 @@ export default function ChatPage() {
   const [apiKey, setApiKey] = useState('');
 
   useEffect(() => {
-    const key = localStorage.getItem('eral_api_key') ?? '';
+    const key = localStorage.getItem('eral_token') ?? '';
     if (!key) {
       router.replace('/login');
     } else {
@@ -47,7 +47,7 @@ export default function ChatPage() {
       }}
     >
       <Sidebar apiKey={apiKey} onSignOut={() => {
-        localStorage.removeItem('eral_api_key');
+        localStorage.removeItem('eral_token');
         router.replace('/login');
       }} />
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
