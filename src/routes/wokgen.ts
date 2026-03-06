@@ -64,13 +64,18 @@ wokgen.post(
           ],
           maxTokens: count * 400,
           temperature: 0.8,
+          route: 'wokgen',
+          quality: 'best',
         },
         {
           openaiApiKey: c.env.OPENAI_API_KEY,
           cfAI: c.env.AI,
           preferredProvider: c.env.AI_PROVIDER,
+          spendMode: c.env.AI_SPEND_MODE,
           openaiModel: c.env.OPENAI_MODEL,
+          openaiWokgenModel: c.env.OPENAI_WOKGEN_MODEL,
           cfModel: c.env.CF_AI_MODEL,
+          cfWokgenModel: c.env.CF_AI_WOKGEN_MODEL,
           cfFallbackModel: c.env.CF_AI_FALLBACK_MODEL,
         }
       );

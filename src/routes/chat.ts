@@ -53,13 +53,21 @@ chat.post(
 
     try {
       const result = await run(
-        { messages, maxTokens: 1024 },
+        {
+          messages,
+          maxTokens: 1024,
+          route: 'chat',
+          quality: history && history.length > 6 ? 'best' : 'balanced',
+        },
         {
           openaiApiKey: c.env.OPENAI_API_KEY,
           cfAI: c.env.AI,
           preferredProvider: c.env.AI_PROVIDER,
+          spendMode: c.env.AI_SPEND_MODE,
           openaiModel: c.env.OPENAI_MODEL,
+          openaiChatModel: c.env.OPENAI_CHAT_MODEL,
           cfModel: c.env.CF_AI_MODEL,
+          cfChatModel: c.env.CF_AI_CHAT_MODEL,
           cfFallbackModel: c.env.CF_AI_FALLBACK_MODEL,
         }
       );

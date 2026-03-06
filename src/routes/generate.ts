@@ -103,13 +103,18 @@ generate.post(
           ],
           maxTokens: length === 'long' ? 2048 : length === 'medium' ? 1024 : 512,
           temperature: tone === 'playful' ? 0.9 : 0.7,
+          route: 'generate',
+          quality: length === 'long' || transformMode ? 'best' : 'balanced',
         },
         {
           openaiApiKey: c.env.OPENAI_API_KEY,
           cfAI: c.env.AI,
           preferredProvider: c.env.AI_PROVIDER,
+          spendMode: c.env.AI_SPEND_MODE,
           openaiModel: c.env.OPENAI_MODEL,
+          openaiGenerateModel: c.env.OPENAI_GENERATE_MODEL,
           cfModel: c.env.CF_AI_MODEL,
+          cfGenerateModel: c.env.CF_AI_GENERATE_MODEL,
           cfFallbackModel: c.env.CF_AI_FALLBACK_MODEL,
         }
       );
