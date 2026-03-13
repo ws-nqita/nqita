@@ -16,14 +16,16 @@ export interface Env {
   // Secrets
   JWT_SECRET: string;
   OPENAI_API_KEY: string | undefined;
+  GROQ_API_KEY: string | undefined;
   SENTRY_DSN: string | undefined;
-  AI_PROVIDER: 'cloudflare' | 'openai' | undefined;
+  AI_PROVIDER: 'cloudflare' | 'openai' | 'groq' | undefined;
   AI_SPEND_MODE: AISpendMode | undefined;
   OPENAI_MODEL: string | undefined;
   OPENAI_CHAT_MODEL: string | undefined;
   OPENAI_GENERATE_MODEL: string | undefined;
   OPENAI_ANALYZE_MODEL: string | undefined;
   OPENAI_WOKGEN_MODEL: string | undefined;
+  GROQ_MODEL: string | undefined;
   CF_AI_MODEL: string | undefined;
   CF_AI_CHAT_MODEL: string | undefined;
   CF_AI_GENERATE_MODEL: string | undefined;
@@ -143,7 +145,7 @@ export type AIQuality = 'fast' | 'balanced' | 'best';
 export type AISpendMode = 'free-only' | 'paid-fallback' | 'paid-primary';
 
 export interface ModelInfo {
-  provider: 'openai' | 'cloudflare';
+  provider: 'openai' | 'cloudflare' | 'groq';
   model: string;
   fallback: boolean;
 }

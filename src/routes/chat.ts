@@ -63,11 +63,13 @@ chat.post(
         },
         {
           openaiApiKey: c.env.OPENAI_API_KEY,
+          groqApiKey: c.env.GROQ_API_KEY,
           cfAI: c.env.AI,
           preferredProvider: c.env.AI_PROVIDER,
           spendMode: c.env.AI_SPEND_MODE,
           openaiModel: c.env.OPENAI_MODEL,
           openaiChatModel: c.env.OPENAI_CHAT_MODEL,
+          groqModel: c.env.GROQ_MODEL,
           cfModel: c.env.CF_AI_MODEL,
           cfChatModel: c.env.CF_AI_CHAT_MODEL,
           cfFallbackModel: c.env.CF_AI_FALLBACK_MODEL,

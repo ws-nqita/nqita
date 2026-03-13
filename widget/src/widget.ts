@@ -103,7 +103,7 @@ function buildStyles(): string {
     :host {
       all: initial;
       color-scheme: dark;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
 
     *, *::before, *::after {
@@ -116,136 +116,127 @@ function buildStyles(): string {
     }
 
     .eral-btn {
-      width: 52px;
-      height: 52px;
-      border-radius: 999px;
+      width: 56px;
+      height: 56px;
+      border-radius: 18px;
       background: var(--eral-accent);
       border: none;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.28);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 8px 32px rgba(124, 58, 237, 0.3);
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .eral-btn:hover {
-      transform: scale(1.08);
-      box-shadow: 0 6px 32px rgba(0, 0, 0, 0.38);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(124, 58, 237, 0.45);
+    }
+
+    .eral-btn svg {
+      width: 24px;
+      height: 24px;
+      stroke: #fff;
     }
 
     .eral-panel {
-      width: 360px;
-      height: min(520px, 70vh);
-      margin-bottom: 12px;
-      border-radius: 16px;
-      background: #111;
+      width: 380px;
+      height: min(600px, 80vh);
+      margin-bottom: 16px;
+      border-radius: 20px;
+      background: #0d0d0d;
       border: 1px solid #2a2a2a;
       display: flex;
       flex-direction: column;
-      box-shadow: 0 8px 48px rgba(0, 0, 0, 0.48);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
       overflow: hidden;
-      transition: opacity 0.2s ease, transform 0.2s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .eral-hidden {
       opacity: 0;
       pointer-events: none;
-      transform: translateY(12px) scale(0.97);
+      transform: translateY(20px) scale(0.95);
     }
 
     .eral-header {
-      padding: 14px 16px;
+      padding: 16px 20px;
       background: #141414;
       border-bottom: 1px solid #222;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
     }
 
     .eral-header-title {
       display: flex;
       align-items: center;
-      gap: 10px;
-      min-width: 0;
+      gap: 12px;
     }
 
     .eral-avatar {
-      width: 30px;
-      height: 30px;
-      border-radius: 999px;
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
       background: var(--eral-accent);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 700;
-      font-size: 13px;
+      font-weight: 800;
+      font-size: 11px;
       color: #fff;
-      flex-shrink: 0;
-    }
-
-    .eral-name-wrap {
-      min-width: 0;
+      letter-spacing: 0.05em;
     }
 
     .eral-name {
       font-weight: 600;
-      font-size: 14px;
-      color: #f5f5f5;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      font-size: 15px;
+      color: #fff;
+      letter-spacing: -0.01em;
     }
 
     .eral-badge {
       font-size: 10px;
       color: #888;
-      margin-top: 1px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-top: 2px;
+      font-weight: 500;
     }
 
     .eral-close {
-      background: none;
-      border: none;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       cursor: pointer;
-      color: #666;
-      font-size: 18px;
-      padding: 4px;
-      border-radius: 6px;
-      transition: color 0.15s ease;
-      line-height: 1;
-      flex-shrink: 0;
+      color: #888;
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
     }
 
     .eral-close:hover {
-      color: #f5f5f5;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
     }
 
     .eral-messages {
       flex: 1;
       overflow-y: auto;
-      padding: 16px 14px;
+      padding: 20px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
-    }
-
-    .eral-messages::-webkit-scrollbar {
-      width: 4px;
-    }
-
-    .eral-messages::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    .eral-messages::-webkit-scrollbar-thumb {
-      background: #333;
-      border-radius: 999px;
+      gap: 16px;
+      background: radial-gradient(circle at top right, rgba(124, 58, 237, 0.03), transparent 40%);
     }
 
     .eral-msg {
       display: flex;
-      gap: 8px;
+      gap: 10px;
       max-width: 100%;
     }
 
@@ -258,12 +249,11 @@ function buildStyles(): string {
     }
 
     .eral-bubble {
-      padding: 10px 13px;
-      border-radius: 14px;
-      font-size: 13.5px;
-      line-height: 1.5;
-      max-width: 82%;
-      white-space: pre-wrap;
+      padding: 12px 16px;
+      border-radius: 16px;
+      font-size: 14px;
+      line-height: 1.6;
+      max-width: 85%;
       word-break: break-word;
     }
 
@@ -271,122 +261,133 @@ function buildStyles(): string {
       background: var(--eral-accent);
       color: #fff;
       border-bottom-right-radius: 4px;
+      box-shadow: 0 4px 12px rgba(124, 58, 237, 0.2);
     }
 
     .eral-assistant .eral-bubble {
-      background: #1e1e1e;
-      color: #e8e8e8;
+      background: #1a1a1a;
+      color: #f0f0f0;
       border-bottom-left-radius: 4px;
       border: 1px solid #2a2a2a;
     }
 
     .eral-typing {
-      display: inline-flex;
+      display: flex;
       align-items: center;
       gap: 4px;
+      padding: 12px 18px !important;
     }
 
     .eral-typing span {
-      display: inline-block;
-      width: 6px;
-      height: 6px;
-      background: #666;
-      border-radius: 999px;
-      animation: eral-bounce 1.2s infinite;
+      width: 5px;
+      height: 5px;
+      background: #555;
+      border-radius: 50%;
+      animation: eral-pulse 1.5s infinite;
     }
 
-    .eral-typing span:nth-child(2) {
-      animation-delay: 0.2s;
-    }
-
-    .eral-typing span:nth-child(3) {
-      animation-delay: 0.4s;
-    }
-
-    @keyframes eral-bounce {
-      0%, 60%, 100% { transform: translateY(0); }
-      30% { transform: translateY(-6px); }
+    @keyframes eral-pulse {
+      0%, 100% { opacity: 0.3; transform: scale(0.8); }
+      50% { opacity: 1; transform: scale(1.1); }
     }
 
     .eral-input-row {
-      padding: 12px 14px;
+      padding: 16px 20px 20px;
       border-top: 1px solid #222;
-      background: #141414;
+      background: #111;
       display: flex;
-      gap: 8px;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .eral-input-container {
+      position: relative;
+      display: flex;
       align-items: flex-end;
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 14px;
+      padding: 2px;
+      transition: border-color 0.2s ease;
+    }
+
+    .eral-input-container:focus-within {
+      border-color: rgba(124, 58, 237, 0.5);
     }
 
     .eral-textarea {
       flex: 1;
-      background: #1a1a1a;
-      border: 1px solid #2a2a2a;
-      border-radius: 10px;
-      color: #f0f0f0;
-      font-size: 13.5px;
-      padding: 9px 12px;
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 14px;
+      padding: 10px 14px;
       resize: none;
-      min-height: 40px;
-      max-height: 100px;
+      min-height: 42px;
+      max-height: 120px;
       outline: none;
-      transition: border-color 0.15s ease;
-      line-height: 1.4;
+      line-height: 1.5;
       font-family: inherit;
     }
 
-    .eral-textarea:focus {
-      border-color: var(--eral-accent);
-    }
-
-    .eral-textarea::placeholder {
-      color: #555;
-    }
-
     .eral-send {
-      width: 36px;
-      height: 36px;
-      flex-shrink: 0;
-      border-radius: 8px;
+      width: 34px;
+      height: 34px;
+      margin: 4px;
+      border-radius: 10px;
       background: var(--eral-accent);
       border: none;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: opacity 0.15s ease;
+      transition: all 0.2s ease;
+    }
+
+    .eral-send:hover:not(:disabled) {
+      background: #8b5cf6;
+      transform: scale(1.05);
     }
 
     .eral-send:disabled {
-      opacity: 0.4;
+      background: #333;
+      opacity: 0.5;
       cursor: not-allowed;
     }
 
     .eral-send svg {
       width: 16px;
       height: 16px;
-      fill: #fff;
+      fill: none;
+      stroke: #fff;
+      stroke-width: 2.5;
     }
 
     .eral-powered {
       text-align: center;
-      padding: 6px;
-      font-size: 10px;
+      padding-bottom: 12px;
+      font-size: 9px;
       color: #444;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      font-weight: 600;
     }
 
     .eral-powered a {
-      color: #555;
+      color: inherit;
       text-decoration: none;
+      transition: color 0.15s ease;
     }
 
     .eral-powered a:hover {
-      color: #888;
+      color: #666;
     }
 
     @media (max-width: 480px) {
       .eral-panel {
-        width: min(360px, calc(100vw - 20px));
-        border-radius: 12px;
+        width: calc(100vw - 32px);
+        height: min(560px, calc(100vh - 120px));
+        margin-right: 0;
       }
     }
   `;
@@ -434,12 +435,12 @@ class EralWidgetInstance {
   constructor(config: EralConfig) {
     this.config = {
       apiKey: config.apiKey,
-      name: normalizeText(config.name) ?? 'Eral',
+      name: normalizeText(config.name) ?? 'Eral Intelligence',
       color: normalizeText(config.color) ?? '#7c3aed',
       position: config.position ?? 'bottom-right',
       quality: config.quality ?? 'balanced',
-      greeting: normalizeText(config.greeting) ?? 'Hi! I\'m Eral, your AI assistant. How can I help?',
-      placeholder: normalizeText(config.placeholder) ?? 'Ask me anything...',
+      greeting: normalizeText(config.greeting) ?? "Hey — I'm Eral. Ask me anything about WokSpec, the work, or what we can build together.",
+      placeholder: normalizeText(config.placeholder) ?? 'Type your message...',
       apiUrl: normalizeText(config.apiUrl) ?? ERAL_API,
       product: normalizeText(config.product),
       integration: config.integration,
@@ -469,9 +470,9 @@ class EralWidgetInstance {
   }
 
   private applyPosition(): void {
-    this.host.style.bottom = '20px';
-    this.host.style.left = this.config.position === 'bottom-left' ? '20px' : 'auto';
-    this.host.style.right = this.config.position === 'bottom-right' ? '20px' : 'auto';
+    this.host.style.bottom = '24px';
+    this.host.style.left = this.config.position === 'bottom-left' ? '24px' : 'auto';
+    this.host.style.right = this.config.position === 'bottom-right' ? '24px' : 'auto';
   }
 
   private buildDOM(): HTMLDivElement {
@@ -483,13 +484,13 @@ class EralWidgetInstance {
     const headerTitle = createElement('div', 'eral-header-title');
 
     const avatar = createElement('div', 'eral-avatar');
-    avatar.textContent = this.config.name.charAt(0).toUpperCase();
+    avatar.textContent = 'ER';
 
     const nameWrap = createElement('div', 'eral-name-wrap');
     const name = createElement('div', 'eral-name');
     name.textContent = this.config.name;
     const badge = createElement('div', 'eral-badge');
-    badge.textContent = 'AI · WokSpec';
+    badge.textContent = 'WokSpec Ecosystem';
 
     nameWrap.append(name, badge);
     headerTitle.append(avatar, nameWrap);
@@ -504,6 +505,8 @@ class EralWidgetInstance {
     this.messagesEl = createElement('div', 'eral-messages');
 
     const inputRow = createElement('div', 'eral-input-row');
+    const inputContainer = createElement('div', 'eral-input-container');
+    
     this.textarea = createElement('textarea', 'eral-textarea');
     this.textarea.rows = 1;
     this.textarea.placeholder = this.config.placeholder;
@@ -511,19 +514,20 @@ class EralWidgetInstance {
     this.sendBtn = createElement('button', 'eral-send');
     this.sendBtn.type = 'button';
     this.sendBtn.setAttribute('aria-label', 'Send');
-    this.sendBtn.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"></path></svg>';
+    this.sendBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
-    inputRow.append(this.textarea, this.sendBtn);
+    inputContainer.append(this.textarea, this.sendBtn);
+    inputRow.append(inputContainer);
 
     const powered = createElement('div', 'eral-powered');
-    powered.innerHTML = '<a href="https://eral.wokspec.org" target="_blank" rel="noopener noreferrer">Powered by Eral</a>';
+    powered.innerHTML = '<a href="https://wokspec.org" target="_blank" rel="noopener noreferrer">Powered by WokSpec</a>';
 
     this.panel.append(header, this.messagesEl, inputRow, powered);
 
     const toggleButton = createElement('button', 'eral-btn');
     toggleButton.type = 'button';
     toggleButton.setAttribute('aria-label', 'Open Eral AI');
-    toggleButton.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>';
+    toggleButton.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path><path d="M12 8v4"/><path d="M12 12h.01"/></svg>';
 
     shell.append(this.panel, toggleButton);
 
@@ -538,7 +542,7 @@ class EralWidgetInstance {
     });
     this.textarea.addEventListener('input', () => {
       this.textarea.style.height = 'auto';
-      this.textarea.style.height = `${Math.min(this.textarea.scrollHeight, 100)}px`;
+      this.textarea.style.height = `${Math.min(this.textarea.scrollHeight, 120)}px`;
     });
 
     return shell;

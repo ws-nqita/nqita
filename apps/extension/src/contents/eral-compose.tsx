@@ -15,7 +15,13 @@ export const config: PlasmoCSConfig = {
 
 export const getStyle = () => {
   const style = document.createElement('style');
-  style.textContent = cssText;
+  style.textContent = cssText + `
+    @keyframes eral-pulse {
+      0% { box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.7); }
+      70% { box-shadow: 0 0 0 6px rgba(124, 58, 237, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(124, 58, 237, 0); }
+    }
+  `;
   return style;
 };
 
@@ -153,22 +159,28 @@ function ComposeButton() {
           width: 28,
           height: 28,
           borderRadius: 6,
-          background: '#7c3aed',
+          background: 'linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)',
           border: 'none',
           cursor: 'pointer',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          opacity: 0.92,
-          boxShadow: '0 2px 8px rgba(124,58,237,0.4)',
-          transition: 'opacity 0.15s, transform 0.15s',
+          opacity: 0.95,
+          boxShadow: '0 4px 12px rgba(124,58,237,0.5)',
+          transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+          animation: 'eral-pulse 2s infinite',
         }}
-        onMouseEnter={e => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-        onMouseLeave={e => { e.currentTarget.style.opacity = '0.92'; e.currentTarget.style.transform = 'scale(1)'; }}
+        onMouseEnter={e => {
+          e.currentTarget.style.transform = 'scale(1.15) rotate(-3deg)';
+          e.currentTarget.style.boxShadow = '0 6px 16px rgba(124,58,237,0.6)';
+        }}
+        onMouseLeave={e => {
+          e.currentTarget.style.transform = 'scale(1) rotate(0deg)';
+          e.currentTarget.style.boxShadow = '0 4px 12px rgba(124,58,237,0.5)';
+        }}
       >
         <svg width="14" height="14" viewBox="0 0 24 24" fill="white" aria-hidden="true">
-          <path d="M12 3l1.5 3.5L17 8l-3.5 1.5L12 13l-1.5-3.5L7 8l3.5-1.5L12 3z"/>
-          <path d="M19 15l.8 1.8 1.8.8-1.8.8-.8 1.8-.8-1.8-1.8-.8 1.8-.8L19 15z"/>
+          <path d="M12 2l2.4 7.2h7.6l-6 4.8 2.4 7.2-6-4.8-6 4.8 2.4-7.2-6-4.8h7.6z"/>
         </svg>
       </button>
 
@@ -182,18 +194,26 @@ function ComposeButton() {
             top: anchor.y + 36,
             zIndex: 2147483639,
             width: 300,
-            background: '#111',
-            border: '1px solid #2a2a2a',
-            borderRadius: 12,
-            boxShadow: '0 8px 32px rgba(0,0,0,0.7)',
-            padding: '14px',
+            background: '#0f0f0f',
+            border: '1px solid #333',
+            borderRadius: 14,
+            boxShadow: '0 20px 40px -8px rgba(0,0,0,0.8), 0 0 0 1px rgba(124,58,237,0.2)',
+            padding: '16px',
             display: 'flex',
             flexDirection: 'column',
-            gap: 10,
+            gap: 12,
+            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
           }}
         >
+          {/* Header */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span style={{ fontSize: 11, fontWeight: 700, color: '#a855f7', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              ⚡ Supercharged
+            </span>
+          </div>
+
           {/* Mode toggle */}
-          <div style={{ display: 'flex', gap: 6 }}>
+          <div style={{ display: 'flex', gap: 6, padding: 2, background: '#1a1a1a', borderRadius: 8 }}>
             {(['generate', 'improve'] as const).map(m => (
               <button
                 key={m}
@@ -201,17 +221,18 @@ function ComposeButton() {
                 onClick={() => setMode(m)}
                 style={{
                   flex: 1,
-                  padding: '5px 8px',
+                  padding: '6px 8px',
                   borderRadius: 6,
                   border: 'none',
-                  background: mode === m ? '#7c3aed' : '#1e1e1e',
+                  background: mode === m ? '#2d2d2d' : 'transparent',
                   color: mode === m ? '#fff' : '#888',
                   fontSize: 12,
                   cursor: 'pointer',
-                  fontWeight: mode === m ? 600 : 400,
+                  fontWeight: mode === m ? 600 : 500,
+                  transition: 'background 0.15s, color 0.15s',
                 }}
               >
-                {m === 'generate' ? '✨ Generate' : '✏️ Improve'}
+                {m === 'generate' ? 'Generate' : 'Improve'}
               </button>
             ))}
           </div>

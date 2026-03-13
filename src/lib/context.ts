@@ -10,6 +10,13 @@ export const KNOWN_PRODUCTS = [
   'dilu',
   'vecto',
   'woktool',
+  'wokid',
+  'wokpay',
+  'wokcloud',
+  'wokbase',
+  'wokflow',
+  'wokplay',
+  'wokspec',
 ] as const;
 
 export const ProductSchema = z
@@ -44,14 +51,21 @@ export const IntegrationSchema = z
   .optional();
 
 const PRODUCT_DESCRIPTIONS: Record<KnownProduct, string> = {
-  woksite: 'WokSite — the WokSpec main hub (bookings, SSO, community)',
-  wokgen: 'WokGen — AI pixel art and asset generation tool',
-  wokpost: 'WokPost — workflow-focused social media for builders',
-  chopsticks: 'Chopsticks — the WokSpec Discord bot dashboard',
-  extension: 'WokSpec browser extension',
-  dilu: 'Dilu — the WokSpec launchpad for shipping production-ready templates',
-  vecto: 'Vecto — the WokSpec AI design and brand studio',
-  woktool: 'WokTool — the WokSpec browser tools and productivity suite',
+  woksite: 'WokSite — The central WokSpec ecosystem hub for bookings, SSO, and community.',
+  wokgen: 'WokGen — AI-powered asset generation for pixel art, images, and creative media.',
+  wokpost: 'WokPost — Workflow-centric social media platform designed for builders and developers.',
+  chopsticks: 'Chopsticks — Discord integration and community management dashboard for WokSpec.',
+  extension: 'WokSpec Extension — Browser-level AI integration for web interaction and productivity.',
+  dilu: 'Dilu — Production-ready template launchpad for rapid software deployment.',
+  vecto: 'Vecto — AI-driven brand studio and visual identity design platform.',
+  woktool: 'WokTool — Professional browser-based utility suite for developer productivity.',
+  wokid: 'WokID — Unified identity, authentication, and security layer for WokSpec.',
+  wokpay: 'WokPay — Integrated payment processing, billing, and subscription management.',
+  wokcloud: 'WokCloud — High-performance cloud infrastructure and hosting services.',
+  wokbase: 'WokBase — Managed database and real-time storage solutions for WokSpec apps.',
+  wokflow: 'WokFlow — Automation and workflow orchestration engine for builders.',
+  wokplay: 'WokPlay — Community gaming, interactive experiences, and social entertainment.',
+  wokspec: 'WokSpec — The core ecosystem providing tools and services for the next generation of builders.',
 };
 
 function isKnownProduct(product?: string | null): product is KnownProduct {
@@ -155,6 +169,27 @@ export function productPromptExtras(
       break;
     case 'woktool':
       extras.push('When helping in WokTool, guide users to the right browser-based utilities and keep answers practical and fast.');
+      break;
+    case 'wokid':
+      extras.push('Provide guidance on identity management, SSO integration, and security best practices within the WokSpec ecosystem.');
+      break;
+    case 'wokpay':
+      extras.push('Assist with billing, subscription management, and payment processing queries using WokPay.');
+      break;
+    case 'wokcloud':
+      extras.push('Guide users through cloud infrastructure setup, deployment strategies, and performance optimization.');
+      break;
+    case 'wokbase':
+      extras.push('Provide expertise on data modeling, storage optimization, and real-time database management.');
+      break;
+    case 'wokflow':
+      extras.push('Help users build and optimize automated workflows and process orchestrations.');
+      break;
+    case 'wokplay':
+      extras.push('Engage users with community gaming features and social interaction tools.');
+      break;
+    case 'wokspec':
+      extras.push('Provide general assistance across the entire WokSpec ecosystem, serving as a primary point of contact for help and support.');
       break;
     default:
       break;

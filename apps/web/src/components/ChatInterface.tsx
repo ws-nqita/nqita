@@ -18,7 +18,6 @@ export function ChatInterface() {
   const [error, setError] = useState<string | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
 
-  // Expose session state to Sidebar via custom event
   const emitSessionsUpdate = useCallback((sess: string[], activeId?: string) => {
     window.dispatchEvent(
       new CustomEvent('eral:sessions', { detail: { sessions: sess, activeSessionId: activeId } }),
@@ -32,7 +31,7 @@ export function ChatInterface() {
       setSessions(sess);
       emitSessionsUpdate(sess, activeSessionId);
     } catch {
-      // silently fail — user may not have sessions yet
+      // ignore
     }
   }, [activeSessionId, emitSessionsUpdate]);
 
@@ -40,7 +39,6 @@ export function ChatInterface() {
     loadSessions();
   }, [loadSessions]);
 
-  // Listen for sidebar events
   useEffect(() => {
     const onNewChat = () => {
       setActiveSessionId(undefined);
@@ -92,7 +90,6 @@ export function ChatInterface() {
     };
   }, [sessions, activeSessionId, emitSessionsUpdate]);
 
-  // Auto-scroll
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isLoading]);
@@ -134,83 +131,55 @@ export function ChatInterface() {
   };
 
   return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+    <div className="flex-1 flex flex-col overflow-hidden bg-background relative">
       {/* Messages */}
-      <div
-        style={{
-          flex: 1,
-          overflowY: 'auto',
-          padding: '1.25rem 1.25rem 0.5rem',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '0.5rem',
-        }}
-      >
-        {messages.length === 0 && !isLoading && (
-          <div
-            style={{
-              flex: 1,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: 'var(--muted)',
-              textAlign: 'center',
-              padding: '3rem 1rem',
-            }}
-          >
-            <div
-              style={{
-                width: '3.5rem',
-                height: '3.5rem',
-                borderRadius: '1rem',
-                background: 'rgba(124,58,237,0.15)',
-                border: '1px solid rgba(124,58,237,0.25)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontFamily: 'var(--font-heading)',
-                fontWeight: 700,
-                fontSize: '1.5rem',
-                color: 'var(--accent)',
-                marginBottom: '1rem',
-              }}
-            >
-              E
+      <div className="flex-1 overflow-y-auto px-4 md:px-0 flex flex-col items-center custom-scrollbar">
+        <div className="w-full max-w-2xl flex flex-col pt-12 pb-32">
+          {messages.length === 0 && !isLoading && (
+            <div className="flex-1 flex flex-col items-center justify-center py-24 text-center animate-in">
+              <div className="w-16 h-16 rounded-[22px] bg-accent/10 border border-accent/20 flex items-center justify-center mb-8 shadow-2xl shadow-accent/5">
+                <span className="text-2xl font-bold text-accent">ER</span>
+              </div>
+              <h1 className="text-3xl font-bold text-white tracking-tight mb-4">
+                How can Eral help you today?
+              </h1>
+              <p className="text-muted-foreground text-base max-w-sm leading-relaxed">
+                Integrated intelligence for the WokSpec ecosystem. 
+                Ask about code, assets, or your build workflow.
+              </p>
             </div>
-            <p style={{ fontSize: '1rem', fontWeight: 500, color: 'var(--foreground)', marginBottom: '0.375rem' }}>
-              How can I help you today?
-            </p>
-            <p style={{ fontSize: '0.875rem' }}>Ask me anything — I&apos;m Eral, your WokSpec AI.</p>
+          )}
+
+          <div className="flex flex-col">
+            {messages.map((msg) => (
+              <MessageBubble key={msg.id} message={msg} />
+            ))}
           </div>
-        )}
 
-        {messages.map((msg) => (
-          <MessageBubble key={msg.id} message={msg} />
-        ))}
+          {isLoading && <TypingIndicator />}
 
-        {isLoading && <TypingIndicator />}
-
-        <div ref={bottomRef} />
+          <div ref={bottomRef} className="h-4" />
+        </div>
       </div>
 
       {error && (
-        <div
-          style={{
-            margin: '0 1.25rem',
-            padding: '0.625rem 0.875rem',
-            background: 'rgba(239,68,68,0.1)',
-            border: '1px solid rgba(239,68,68,0.3)',
-            borderRadius: '0.5rem',
-            fontSize: '0.8125rem',
-            color: '#f87171',
-          }}
-        >
-          {error}
+        <div className="absolute bottom-32 left-1/2 -translate-x-1/2 w-full max-w-xl px-4 z-20">
+          <div className="bg-red-500/10 border border-red-500/20 backdrop-blur-md rounded-xl p-3 flex items-center gap-3 text-sm text-red-400">
+             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+             {error}
+          </div>
         </div>
       )}
 
-      <ChatInput onSend={handleSend} disabled={isLoading} />
+      {/* Input Overlay */}
+      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-background via-background/95 to-transparent pt-12 pb-8 px-4 flex justify-center pointer-events-none">
+        <div className="w-full max-w-2xl pointer-events-auto">
+          <ChatInput onSend={handleSend} disabled={isLoading} />
+          <p className="mt-4 text-[10px] text-center text-muted/40 uppercase tracking-[0.2em] font-bold">
+            Eral Intelligence — WokSpec Ecosystem
+          </p>
+        </div>
+      </div>
     </div>
   );
 }

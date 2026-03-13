@@ -15,53 +15,40 @@ export function MessageBubble({ message }: Props) {
 
   return (
     <div
-      style={{
-        display: 'flex',
-        flexDirection: isUser ? 'row-reverse' : 'row',
-        gap: '0.625rem',
-        alignItems: 'flex-start',
-        padding: '0.25rem 0',
-      }}
+      className={`flex w-full group transition-colors px-4 py-8 border-b border-white/[0.03] last:border-0 ${
+        isUser ? 'bg-white/[0.01]' : 'bg-transparent'
+      }`}
     >
-      {/* Avatar */}
-      {!isUser && (
-        <div
-          style={{
-            flexShrink: 0,
-            width: '1.875rem',
-            height: '1.875rem',
-            borderRadius: '50%',
-            background: 'var(--accent)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontFamily: 'var(--font-heading)',
-            fontWeight: 700,
-            fontSize: '0.75rem',
-            color: '#fff',
-            marginTop: '0.125rem',
-          }}
-          aria-hidden="true"
-        >
-          E
+      <div className="w-full max-w-2xl mx-auto flex gap-6">
+        {/* Avatar/Indicator */}
+        <div className="flex-shrink-0 w-8 h-8 flex items-start justify-center pt-1">
+          {isUser ? (
+            <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center font-bold text-[10px] text-muted">
+              U
+            </div>
+          ) : (
+            <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center font-bold text-[10px] text-white shadow-lg shadow-accent/20">
+              ER
+            </div>
+          )}
         </div>
-      )}
 
-      {/* Bubble */}
-      <div
-        style={{
-          maxWidth: 'min(80%, 680px)',
-          background: isUser ? 'var(--accent)' : 'var(--card)',
-          color: isUser ? '#fff' : 'var(--foreground)',
-          border: isUser ? 'none' : '1px solid var(--border)',
-          borderRadius: isUser ? '1.25rem 1.25rem 0.25rem 1.25rem' : '0.25rem 1.25rem 1.25rem 1.25rem',
-          padding: '0.625rem 0.9375rem',
-          fontSize: '0.9375rem',
-          lineHeight: 1.6,
-          wordBreak: 'break-word',
-        }}
-      >
-        <FormattedContent content={message.content} isUser={isUser} />
+        {/* Content */}
+        <div className="flex-1 min-w-0 flex flex-col gap-2">
+          <div className="flex items-center gap-3">
+             <span className="text-xs font-bold uppercase tracking-widest text-muted/60">
+               {isUser ? 'You' : 'Eral'}
+             </span>
+             {!isUser && (
+               <span className="text-[9px] font-bold text-accent uppercase tracking-[0.15em] px-1.5 py-0.5 rounded bg-accent/10 border border-accent/20">
+                 Assistant
+               </span>
+             )}
+          </div>
+          <div className="text-[15px] leading-[1.7] text-foreground/90 font-medium selection:bg-accent/20">
+            <FormattedContent content={message.content} isUser={isUser} />
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -72,7 +59,7 @@ function FormattedContent({ content, isUser }: { content: string; isUser: boolea
   const parts = content.split(/(```[\s\S]*?```|`[^`]+`)/g);
 
   return (
-    <>
+    <div className="flex flex-col gap-4">
       {parts.map((part, i) => {
         if (part.startsWith('```') && part.endsWith('```')) {
           const inner = part.slice(3, -3);
@@ -80,43 +67,28 @@ function FormattedContent({ content, isUser }: { content: string; isUser: boolea
           const lang = newlineIdx > 0 ? inner.slice(0, newlineIdx).trim() : '';
           const code = newlineIdx > 0 ? inner.slice(newlineIdx + 1) : inner;
           return (
-            <pre
-              key={i}
-              style={{
-                background: 'rgba(0,0,0,0.35)',
-                border: '1px solid var(--border)',
-                borderRadius: '0.5rem',
-                padding: '0.75rem 1rem',
-                overflowX: 'auto',
-                fontSize: '0.8125rem',
-                lineHeight: 1.6,
-                margin: '0.5rem 0',
-                fontFamily: 'ui-monospace, Menlo, monospace',
-                whiteSpace: 'pre',
-                color: isUser ? 'rgba(255,255,255,0.9)' : 'var(--foreground)',
-              }}
-            >
-              {lang && (
-                <span style={{ fontSize: '0.6875rem', color: 'var(--muted)', display: 'block', marginBottom: '0.375rem' }}>
-                  {lang}
-                </span>
-              )}
-              {code}
-            </pre>
+            <div key={i} className="my-2 group relative">
+              <div className="flex items-center justify-between px-4 py-2 bg-[#1a1a1a] border-t border-x border-border rounded-t-xl">
+                 <span className="text-[10px] font-bold font-mono text-muted uppercase tracking-widest">
+                   {lang || 'code'}
+                 </span>
+                 <button className="text-[10px] font-bold text-muted hover:text-white transition-colors uppercase tracking-widest">
+                   Copy
+                 </button>
+              </div>
+              <pre
+                className="p-6 bg-[#0f0f0f] border border-border rounded-b-xl overflow-x-auto text-[13px] font-mono leading-7"
+              >
+                <code className="text-[#d1d1d1]">{code.trim()}</code>
+              </pre>
+            </div>
           );
         }
         if (part.startsWith('`') && part.endsWith('`')) {
           return (
             <code
               key={i}
-              style={{
-                background: 'rgba(0,0,0,0.3)',
-                border: '1px solid var(--border)',
-                borderRadius: '0.25rem',
-                padding: '0.1em 0.4em',
-                fontSize: '0.875em',
-                fontFamily: 'ui-monospace, Menlo, monospace',
-              }}
+              className="px-1.5 py-0.5 rounded bg-white/10 text-[0.9em] font-mono text-accent"
             >
               {part.slice(1, -1)}
             </code>
@@ -124,76 +96,38 @@ function FormattedContent({ content, isUser }: { content: string; isUser: boolea
         }
         // Render plain text with line breaks preserved
         return (
-          <span key={i} style={{ whiteSpace: 'pre-wrap' }}>
+          <span key={i} className="whitespace-pre-wrap">
             {part}
           </span>
         );
       })}
-    </>
+    </div>
   );
 }
 
 export function TypingIndicator() {
   return (
-    <div
-      style={{
-        display: 'flex',
-        gap: '0.625rem',
-        alignItems: 'flex-start',
-        padding: '0.25rem 0',
-      }}
-    >
-      <div
-        style={{
-          flexShrink: 0,
-          width: '1.875rem',
-          height: '1.875rem',
-          borderRadius: '50%',
-          background: 'var(--accent)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontFamily: 'var(--font-heading)',
-          fontWeight: 700,
-          fontSize: '0.75rem',
-          color: '#fff',
-          marginTop: '0.125rem',
-        }}
-        aria-hidden="true"
-      >
-        E
-      </div>
-      <div
-        style={{
-          background: 'var(--card)',
-          border: '1px solid var(--border)',
-          borderRadius: '0.25rem 1.25rem 1.25rem 1.25rem',
-          padding: '0.625rem 1rem',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.3rem',
-        }}
-        aria-label="Eral is typing"
-      >
-        {[0, 1, 2].map((i) => (
-          <span
-            key={i}
-            style={{
-              width: '6px',
-              height: '6px',
-              borderRadius: '50%',
-              background: 'var(--muted)',
-              display: 'inline-block',
-              animation: `typing-bounce 1.2s ease-in-out ${i * 0.15}s infinite`,
-            }}
-          />
-        ))}
-        <style>{`
-          @keyframes typing-bounce {
-            0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
-            30% { transform: translateY(-4px); opacity: 1; }
-          }
-        `}</style>
+    <div className="flex w-full px-4 py-8">
+      <div className="w-full max-w-2xl mx-auto flex gap-6">
+        <div className="flex-shrink-0 w-8 h-8 flex items-start justify-center pt-1">
+          <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center font-bold text-[10px] text-white shadow-lg shadow-accent/20">
+            ER
+          </div>
+        </div>
+        <div className="flex flex-col gap-2 pt-1">
+           <span className="text-xs font-bold uppercase tracking-widest text-muted/60">
+             Eral is writing
+           </span>
+           <div className="flex gap-1.5 pt-2">
+            {[0, 1, 2].map((i) => (
+              <div
+                key={i}
+                className="w-1.5 h-1.5 rounded-full bg-accent/40 animate-bounce"
+                style={{ animationDelay: `${i * 0.1}s`, animationDuration: '0.6s' }}
+              />
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

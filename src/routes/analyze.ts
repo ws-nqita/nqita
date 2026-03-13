@@ -10,11 +10,11 @@ const analyze = new Hono<{ Bindings: Env; Variables: { user: EralUser } }>();
 analyze.use('*', requireAuth('analyze'));
 
 const ANALYZE_INSTRUCTIONS: Record<AnalyzeType, string> = {
-  summarize: 'Provide a clear, concise summary of the following content. Capture the main ideas without losing important details.',
-  explain:   'Explain the following content in plain language. Assume no prior knowledge — make it accessible to a non-expert.',
-  review:    'Review the following content critically. Identify strengths, weaknesses, potential improvements, and any issues (bugs, logic errors, missing edge cases, or unclear writing).',
-  extract:   'Extract and list the key points, facts, or action items from the following content. Use a clean bullet-point format.',
-  sentiment: 'Analyze the tone and sentiment of the following content. Identify whether it is positive, negative, or neutral, and explain what signals indicate that tone.',
+  summarize: 'Generate a precise technical summary. Focus on core objectives and technical outcomes. Do not use emojis.',
+  explain:   'Provide a technical explanation of the content. Use professional terminology and focus on architectural or logic-based clarity. Do not use emojis.',
+  review:    'Perform a critical technical review. Identify logic errors, architectural weaknesses, security implications, and potential optimizations. Do not use emojis.',
+  extract:   'Identify and list key technical requirements, action items, or data points. Use structured formatting. Do not use emojis.',
+  sentiment: 'Analyze technical sentiment and professional tone. Identify indicators of confidence, risk, or urgency in the provided text. Do not use emojis.',
 };
 
 // POST /v1/analyze
@@ -68,11 +68,13 @@ analyze.post(
         },
         {
           openaiApiKey: c.env.OPENAI_API_KEY,
+          groqApiKey: c.env.GROQ_API_KEY,
           cfAI: c.env.AI,
           preferredProvider: c.env.AI_PROVIDER,
           spendMode: c.env.AI_SPEND_MODE,
           openaiModel: c.env.OPENAI_MODEL,
           openaiAnalyzeModel: c.env.OPENAI_ANALYZE_MODEL,
+          groqModel: c.env.GROQ_MODEL,
           cfModel: c.env.CF_AI_MODEL,
           cfAnalyzeModel: c.env.CF_AI_ANALYZE_MODEL,
           cfFallbackModel: c.env.CF_AI_FALLBACK_MODEL,

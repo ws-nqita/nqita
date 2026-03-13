@@ -17,20 +17,23 @@ export interface RunResult {
 }
 
 const DEFAULT_OPENAI_MODEL = 'gpt-4o';
+const DEFAULT_GROQ_MODEL = 'llama3-70b-8192';
 const DEFAULT_CF_MODEL = '@cf/meta/llama-3.3-70b-instruct-fp8-fast';
 const DEFAULT_CF_FALLBACK_MODEL = '@cf/meta/llama-3.1-8b-instruct-fp8-fast';
 const DEFAULT_ROUTE: AIRoute = 'chat';
 const DEFAULT_QUALITY: AIQuality = 'balanced';
 const DEFAULT_SPEND_MODE: AISpendMode = 'free-only';
 
-// ── OpenAI GPT-4o ─────────────────────────────────────────────────────────────
+// ── OpenAI Compatible API ─────────────────────────────────────────────────────
 
-async function runOpenAI(
+async function runOpenAICompatible(
+  baseUrl: string,
   apiKey: string,
   options: RunOptions,
-  model = DEFAULT_OPENAI_MODEL
+  model: string,
+  providerName: 'openai' | 'groq'
 ): Promise<RunResult> {
-  const res = await fetch('https://api.openai.com/v1/chat/completions', {
+  const res = await fetch(baseUrl, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -46,7 +49,7 @@ async function runOpenAI(
 
   if (!res.ok) {
     const err = await res.text();
-    throw new Error(`OpenAI error ${res.status}: ${err}`);
+    throw new Error(`${providerName} error ${res.status}: ${err}`);
   }
 
   const data = await res.json() as {
@@ -55,8 +58,36 @@ async function runOpenAI(
 
   return {
     content: data.choices[0]?.message?.content ?? '',
-    model: { provider: 'openai', model, fallback: false },
+    model: { provider: providerName, model, fallback: false },
   };
+}
+
+async function runOpenAI(
+  apiKey: string,
+  options: RunOptions,
+  model = DEFAULT_OPENAI_MODEL
+): Promise<RunResult> {
+  return runOpenAICompatible(
+    'https://api.openai.com/v1/chat/completions',
+    apiKey,
+    options,
+    model,
+    'openai'
+  );
+}
+
+async function runGroq(
+  apiKey: string,
+  options: RunOptions,
+  model = DEFAULT_GROQ_MODEL
+): Promise<RunResult> {
+  return runOpenAICompatible(
+    'https://api.groq.com/openai/v1/chat/completions',
+    apiKey,
+    options,
+    model,
+    'groq'
+  );
 }
 
 // ── Cloudflare Workers AI (fallback) ──────────────────────────────────────────
@@ -131,6 +162,14 @@ function pickOpenAIModel(
   }
 }
 
+function pickGroqModel(
+  providers: {
+    groqModel?: string;
+  }
+): string {
+  return providers.groqModel ?? DEFAULT_GROQ_MODEL;
+}
+
 function pickCloudflareModel(
   route: AIRoute,
   quality: AIQuality,
@@ -171,18 +210,24 @@ function pickCloudflareModel(
 function resolveProviderOrder(
   spendMode: AISpendMode,
   preferredProvider?: Env['AI_PROVIDER']
-): Array<'cloudflare' | 'openai'> {
+): Array<'cloudflare' | 'openai' | 'groq'> {
   if (spendMode === 'free-only') {
     return ['cloudflare'];
   }
 
-  if (spendMode === 'paid-fallback') {
-    return ['cloudflare', 'openai'];
+  // If user explicitly asks for Groq
+  if (preferredProvider === 'groq') {
+    return ['groq', 'cloudflare', 'openai'];
   }
 
+  if (spendMode === 'paid-fallback') {
+    return ['cloudflare', 'openai', 'groq'];
+  }
+
+  // Default paid-primary
   return preferredProvider === 'openai'
-    ? ['openai', 'cloudflare']
-    : ['cloudflare', 'openai'];
+    ? ['openai', 'groq', 'cloudflare']
+    : ['groq', 'openai', 'cloudflare']; // Prefer Groq if not specified but paid is primary (faster/cheaper)
 }
 
 // ── Unified run function ──────────────────────────────────────────────────────
@@ -197,6 +242,7 @@ export async function run(
   options: RunOptions,
   providers: {
     openaiApiKey?: string;
+    groqApiKey?: string;
     cfAI?: Ai;
     preferredProvider?: Env['AI_PROVIDER'];
     spendMode?: AISpendMode;
@@ -205,6 +251,7 @@ export async function run(
     openaiGenerateModel?: string;
     openaiAnalyzeModel?: string;
     openaiWokgenModel?: string;
+    groqModel?: string;
     cfModel?: string;
     cfChatModel?: string;
     cfGenerateModel?: string;
@@ -219,9 +266,23 @@ export async function run(
   const providerOrder = resolveProviderOrder(spendMode, providers.preferredProvider);
   const cfModels = pickCloudflareModel(route, quality, providers);
   const openaiModel = pickOpenAIModel(route, providers);
+  const groqModel = pickGroqModel(providers);
   let lastError: unknown;
 
   for (const provider of providerOrder) {
+    if (provider === 'groq' && providers.groqApiKey) {
+      try {
+        return await runGroq(
+          providers.groqApiKey,
+          options,
+          groqModel
+        );
+      } catch (error) {
+        lastError = error;
+        // Continue to next provider
+      }
+    }
+
     if (provider === 'cloudflare' && providers.cfAI) {
       try {
         return await runCloudflareAI(
@@ -232,7 +293,7 @@ export async function run(
         );
       } catch (error) {
         lastError = error;
-        if (!providers.openaiApiKey) throw error;
+        if (!providers.openaiApiKey && !providers.groqApiKey) throw error;
       }
     }
 
@@ -245,7 +306,7 @@ export async function run(
         );
       } catch (error) {
         lastError = error;
-        if (!providers.cfAI) throw error;
+        if (!providers.cfAI && !providers.groqApiKey) throw error;
       }
     }
   }
@@ -258,24 +319,33 @@ export async function run(
     throw new Error('No free AI provider configured. Cloudflare Workers AI is required while AI_SPEND_MODE=free-only.');
   }
 
-  throw new Error('No AI provider configured. Set AI binding for Cloudflare AI or provide OPENAI_API_KEY.');
+  throw new Error('No AI provider configured. Set AI binding for Cloudflare AI or provide OPENAI_API_KEY/GROQ_API_KEY.');
 }
 
 /** Build the shared Eral system prompt. */
 export function eralSystemPrompt(extras?: string): string {
   return [
-    'You are Eral, the intelligent AI assistant built for WokSpec and embeddable into any website, app, extension, agent, or API integration.',
-    'You have deep knowledge of all WokSpec products:',
-    '  • WokSite   — main hub, SSO, bookings, community (wokspec.org)',
-    '  • WokAPI    — unified API layer with authentication for all products',
-    '  • WokGen    — AI-powered asset generation: pixel art, images, media',
-    '  • WokPost   — workflow-focused social media platform for builders',
-    '  • Chopsticks — Discord bot for builder communities',
-    '  • Eral      — that\'s you! The AI layer powering intelligence across WokSpec',
+    'You are Eral, the professional AI assistant for the entire WokSpec ecosystem. You are integrated across all WokSpec products to provide technical assistance, product support, and workflow optimization.',
+    'Introduction: When greeting users for the first time or if they ask who you are, say: "Hey — I\'m Eral. Ask me anything about WokSpec, the work, or what we can build together."',
+    'System Directives:',
+    '1. Tone: Professional, direct, and technical. Do not use emojis, filler words, or unnecessary pleasantries.',
+    '2. Context: Treat provided integration context (URL, page title, product) as primary. Adapt your expertise to the specific WokSpec service the user is currently using.',
+    '3. Branding: Always align with WokSpec.org standards. Reference other WokSpec products only when they provide a genuine solution to the user\'s problem.',
+    '4. Accuracy: Provide precise, actionable information. If unsure about a specific WokSpec feature, refer the user to the official documentation or support channels.',
     '',
-    'Be concise, helpful, and direct. You understand developer workflows, content creation, and building products.',
-    'When integration context is supplied, treat it as authoritative and adapt your response to that product, page, and workflow.',
-    'When referencing WokSpec products, suggest relevant features only when they are actually helpful.',
+    'WokSpec Ecosystem Knowledge:',
+    '- WokSite (wokspec.org): Central ecosystem hub, SSO, community, and the starting point for all builders.',
+    '- WokID: Unified identity and security layer for seamless cross-product auth.',
+    '- WokGen: AI asset generation (pixel art, images, media) with specialized ComfyUI workflows.',
+    '- WokPost (wokpost.wokspec.org): Builder-focused social media for shipping in public.',
+    '- Vecto: Brand studio and visual identity engine.',
+    '- Dilu: Template launchpad and deployment infrastructure.',
+    '- WokPay: Payments, billing, and ecosystem commerce.',
+    '- WokCloud/WokBase: Scalable infrastructure and managed real-time storage.',
+    '- WokFlow: Automation and orchestration for complex build processes.',
+    '- WokTool (woktool.wokspec.org): Developer utility suite for rapid browser-based tasks.',
+    '- Chopsticks: Community management integration and Discord synchronization.',
+    '',
     extras ?? '',
   ].filter(Boolean).join('\n');
 }

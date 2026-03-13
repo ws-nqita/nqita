@@ -10,284 +10,99 @@ interface Props {
 export function Sidebar({ apiKey, onSignOut }: Props) {
   const [sessions, setSessions] = useState<string[]>([]);
   const [activeSessionId, setActiveSessionId] = useState<string | undefined>(undefined);
-  const [hoveredSession, setHoveredSession] = useState<string | null>(null);
-  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    const onSessionsUpdate = (e: Event) => {
-      const { sessions: sess, activeSessionId: active } = (e as CustomEvent).detail;
+    const handleUpdate = (e: Event) => {
+      const { sessions: sess, activeSessionId: activeId } = (e as CustomEvent).detail;
       setSessions(sess);
-      setActiveSessionId(active);
+      setActiveSessionId(activeId);
     };
-    window.addEventListener('eral:sessions', onSessionsUpdate);
-    return () => window.removeEventListener('eral:sessions', onSessionsUpdate);
+    window.addEventListener('eral:sessions', handleUpdate);
+    return () => window.removeEventListener('eral:sessions', handleUpdate);
   }, []);
 
-  const handleNewChat = () => {
-    setActiveSessionId(undefined);
+  const onNewChat = () => {
     window.dispatchEvent(new CustomEvent('eral:new-chat'));
-    setIsOpen(false);
   };
 
-  const handleSelect = (id: string) => {
-    setActiveSessionId(id);
+  const onSelectSession = (id: string) => {
     window.dispatchEvent(new CustomEvent('eral:select-session', { detail: id }));
-    setIsOpen(false);
   };
 
-  const handleDelete = (e: React.MouseEvent, id: string) => {
+  const onDeleteSession = (e: React.MouseEvent, id: string) => {
     e.stopPropagation();
     window.dispatchEvent(new CustomEvent('eral:delete-session', { detail: id }));
   };
 
-  const formatSession = (id: string, idx: number) => {
-    if (id.length > 16) return `Chat ${idx + 1}`;
-    return id;
-  };
-
-  const truncatedKey = apiKey ? `${apiKey.slice(0, 8)}…` : '';
-
-  const sidebarContent = (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        height: '100%',
-        padding: '0.875rem 0.75rem',
-        gap: '0.25rem',
-      }}
-    >
-      {/* New chat button */}
-      <button
-        onClick={handleNewChat}
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.5rem',
-          background: 'rgba(124,58,237,0.1)',
-          border: '1px solid rgba(124,58,237,0.25)',
-          borderRadius: '0.625rem',
-          color: '#a78bfa',
-          padding: '0.6rem 0.875rem',
-          fontWeight: 600,
-          fontSize: '0.875rem',
-          cursor: 'pointer',
-          width: '100%',
-          marginBottom: '0.5rem',
-          transition: 'background 0.15s',
-        }}
-        onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(124,58,237,0.18)'; }}
-        onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(124,58,237,0.1)'; }}
-      >
-        <PlusIcon />
-        New chat
-      </button>
-
-      {/* Session list */}
-      <div style={{ flex: 1, overflowY: 'auto' }}>
-        {sessions.length === 0 && (
-          <p style={{ fontSize: '0.8125rem', color: 'var(--muted)', padding: '0.5rem 0.375rem' }}>
-            No conversations yet.
-          </p>
-        )}
-        {sessions.map((id, idx) => (
-          <div
-            key={id}
-            onClick={() => handleSelect(id)}
-            onMouseEnter={() => setHoveredSession(id)}
-            onMouseLeave={() => setHoveredSession(null)}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              padding: '0.5rem 0.75rem',
-              borderRadius: '0.5rem',
-              cursor: 'pointer',
-              background: activeSessionId === id ? 'rgba(124,58,237,0.12)' : 'transparent',
-              color: activeSessionId === id ? '#a78bfa' : 'var(--foreground)',
-              fontSize: '0.875rem',
-              transition: 'background 0.1s',
-              gap: '0.375rem',
-            }}
-            onMouseOver={(e) => {
-              if (activeSessionId !== id) e.currentTarget.style.background = 'rgba(255,255,255,0.04)';
-            }}
-            onMouseOut={(e) => {
-              if (activeSessionId !== id) e.currentTarget.style.background = 'transparent';
-            }}
-          >
-            <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>
-              {formatSession(id, idx)}
-            </span>
-            {hoveredSession === id && (
-              <button
-                onClick={(e) => handleDelete(e, id)}
-                aria-label="Delete session"
-                style={{
-                  flexShrink: 0,
-                  background: 'transparent',
-                  border: 'none',
-                  color: 'var(--muted)',
-                  cursor: 'pointer',
-                  padding: '0.125rem',
-                  borderRadius: '0.25rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                }}
-                onMouseEnter={(e) => { e.currentTarget.style.color = '#f87171'; }}
-                onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--muted)'; }}
-              >
-                <TrashIcon />
-              </button>
-            )}
-          </div>
-        ))}
-      </div>
-
-      {/* Key info + sign out */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: '0.5rem',
-          padding: '0.625rem 0.5rem',
-          borderTop: '1px solid var(--border)',
-          marginTop: '0.5rem',
-        }}
-      >
-        <span
-          style={{
-            fontSize: '0.75rem',
-            color: 'var(--muted)',
-            fontFamily: 'ui-monospace, Menlo, monospace',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
-          }}
-        >
-          {truncatedKey}
-        </span>
+  return (
+    <aside className="w-72 bg-[#0a0a0a] border-r border-white/5 flex flex-col h-full z-30 transition-all overflow-hidden hidden md:flex">
+      {/* Sidebar Header */}
+      <div className="p-6">
         <button
-          onClick={onSignOut}
-          style={{
-            flexShrink: 0,
-            background: 'transparent',
-            border: '1px solid var(--border)',
-            borderRadius: '0.375rem',
-            color: 'var(--muted)',
-            fontSize: '0.75rem',
-            padding: '0.25rem 0.5rem',
-            cursor: 'pointer',
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--foreground)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--muted)'; }}
+          onClick={onNewChat}
+          className="w-full bg-white hover:bg-white/90 text-black py-3 rounded-2xl flex items-center justify-center gap-3 font-bold text-sm transition-all shadow-2xl active:scale-[0.98] group"
         >
-          Sign out
+          <svg className="w-4 h-4 transition-transform group-hover:rotate-90" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          New Chat
         </button>
       </div>
-    </div>
-  );
 
-  return (
-    <>
-      {/* Mobile toggle */}
-      <button
-        onClick={() => setIsOpen((v) => !v)}
-        aria-label="Toggle sidebar"
-        style={{
-          display: 'none',
-          position: 'fixed',
-          top: '0.875rem',
-          left: '1rem',
-          zIndex: 50,
-          background: 'var(--card)',
-          border: '1px solid var(--border)',
-          borderRadius: '0.5rem',
-          width: '2.25rem',
-          height: '2.25rem',
-          alignItems: 'center',
-          justifyContent: 'center',
-          cursor: 'pointer',
-          color: 'var(--foreground)',
-        }}
-        className="mobile-sidebar-toggle"
-      >
-        <HamburgerIcon />
-      </button>
-
-      {/* Sidebar desktop */}
-      <aside
-        style={{
-          width: '14rem',
-          flexShrink: 0,
-          borderRight: '1px solid var(--border)',
-          background: 'var(--background)',
-          overflowY: 'hidden',
-          display: 'flex',
-          flexDirection: 'column',
-        }}
-      >
-        {sidebarContent}
-      </aside>
-
-      {/* Mobile drawer */}
-      {isOpen && (
-        <div style={{ position: 'fixed', inset: 0, zIndex: 40, display: 'flex' }}>
-          <div
-            style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.6)' }}
-            onClick={() => setIsOpen(false)}
-          />
-          <aside
-            style={{
-              position: 'relative',
-              width: '14rem',
-              background: 'var(--card)',
-              borderRight: '1px solid var(--border)',
-              zIndex: 1,
-              overflowY: 'auto',
-            }}
-          >
-            {sidebarContent}
-          </aside>
+      {/* Session List */}
+      <div className="flex-1 overflow-y-auto px-4 custom-scrollbar">
+        <div className="flex flex-col gap-1.5 py-4">
+          <span className="px-4 text-[10px] font-bold text-muted uppercase tracking-[0.2em] mb-4 opacity-50">
+            Recent Activity
+          </span>
+          {sessions.length === 0 && (
+            <div className="px-4 py-8 text-center bg-white/[0.02] border border-white/5 rounded-2xl">
+              <p className="text-xs text-muted/60 leading-relaxed font-medium">
+                Your recent conversations will appear here.
+              </p>
+            </div>
+          )}
+          {sessions.map((id) => (
+            <button
+              key={id}
+              onClick={() => onSelectSession(id)}
+              className={`group flex items-center justify-between w-full p-3.5 rounded-2xl text-left text-sm font-medium transition-all relative overflow-hidden ${
+                activeSessionId === id
+                  ? 'bg-accent/10 text-white border border-accent/20'
+                  : 'hover:bg-white/[0.04] text-muted hover:text-white border border-transparent'
+              }`}
+            >
+              <div className="flex items-center gap-3 truncate">
+                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className={activeSessionId === id ? 'text-accent' : 'text-muted/40'}><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                 <span className="truncate">{id}</span>
+              </div>
+              <button
+                onClick={(e) => onDeleteSession(e, id)}
+                className="opacity-0 group-hover:opacity-100 p-1.5 hover:bg-white/10 rounded-lg text-muted hover:text-red-400 transition-all"
+              >
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+              </button>
+            </button>
+          ))}
         </div>
-      )}
+      </div>
 
-      <style>{`
-        @media (max-width: 640px) {
-          .mobile-sidebar-toggle { display: flex !important; }
-        }
-      `}</style>
-    </>
-  );
-}
-
-function PlusIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
-      <line x1="12" y1="5" x2="12" y2="19" />
-      <line x1="5" y1="12" x2="19" y2="12" />
-    </svg>
-  );
-}
-
-function TrashIcon() {
-  return (
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <polyline points="3 6 5 6 21 6" />
-      <path d="M19 6l-1 14H6L5 6" />
-      <path d="M10 11v6M14 11v6" />
-      <path d="M9 6V4h6v2" />
-    </svg>
-  );
-}
-
-function HamburgerIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
-      <line x1="3" y1="6" x2="21" y2="6" />
-      <line x1="3" y1="12" x2="21" y2="12" />
-      <line x1="3" y1="18" x2="21" y2="18" />
-    </svg>
+      {/* Sidebar Footer */}
+      <div className="p-6 flex flex-col gap-4 border-t border-white/5 bg-[#080808]">
+        <div className="flex items-center gap-4 px-2">
+           <div className="w-10 h-10 rounded-xl bg-accent/20 border border-accent/30 flex items-center justify-center font-bold text-xs text-accent">
+             ER
+           </div>
+           <div className="flex flex-col min-w-0">
+             <span className="text-sm font-bold text-white truncate">WokSpec Member</span>
+             <span className="text-[10px] font-bold text-muted uppercase tracking-widest">Premium Tier</span>
+           </div>
+        </div>
+        <button
+          onClick={onSignOut}
+          className="w-full flex items-center justify-center gap-2 p-3 rounded-xl border border-white/5 text-muted hover:text-white hover:bg-white/5 transition-all font-bold text-xs uppercase tracking-widest"
+        >
+          Sign Out
+        </button>
+      </div>
+    </aside>
   );
 }

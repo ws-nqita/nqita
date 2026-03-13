@@ -19,8 +19,9 @@ enabled = true
 
 [vars]
 ENVIRONMENT = "production"
-AI_PROVIDER = "cloudflare"
-AI_SPEND_MODE = "free-only"
+AI_PROVIDER = "groq"
+AI_SPEND_MODE = "paid-primary"
+GROQ_MODEL = "llama3-70b-8192"
 CF_AI_MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast"
 CF_AI_FALLBACK_MODEL = "@cf/meta/llama-3.1-8b-instruct-fp8-fast"
 

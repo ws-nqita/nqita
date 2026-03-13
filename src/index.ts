@@ -21,20 +21,12 @@ app.use('*', securityHeaders());
 // External sites using an API key may come from any origin.
 app.use('*', cors({
   origin: (origin, c) => {
-    const wokspecOrigins = [
-      'https://wokspec.org',
-      'https://www.wokspec.org',
-      'https://wokgen.wokspec.org',
-      'https://wokpost.wokspec.org',
-      'https://chopsticks.wokspec.org',
-      'https://eral.wokspec.org',
-    ];
-    // Always allow WokSpec origins
-    if (wokspecOrigins.includes(origin ?? '')) return origin;
-    // Always allow browser extensions
-    if (origin?.startsWith('chrome-extension://') || origin?.startsWith('moz-extension://')) return origin;
-    // Allow localhost in dev
-    if (c.env.ENVIRONMENT !== 'production' && origin?.includes('localhost')) return origin;
+    const isWokSpec = origin?.endsWith('.wokspec.org') || origin === 'https://wokspec.org';
+    const isDev = c.env.ENVIRONMENT !== 'production' && (origin?.includes('localhost') || origin?.includes('127.0.0.1'));
+    const isExtension = origin?.startsWith('chrome-extension://') || origin?.startsWith('moz-extension://');
+
+    if (isWokSpec || isDev || isExtension) return origin;
+
     // Allow any origin — API key auth provides the security boundary for external sites.
     // The Authorization header check in middleware enforces auth regardless of origin.
     return origin ?? '*';

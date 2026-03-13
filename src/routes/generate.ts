@@ -4,23 +4,24 @@ import { z } from 'zod';
 import type { Env, EralUser, GenerateType } from '../types';
 import { requireAuth, rateLimit } from '../middleware';
 import { run, eralSystemPrompt } from '../lib/openai';
+import { getMemory, appendMemory, clearMemory, listSessions } from '../lib/memory';
 import { buildContext, IntegrationSchema, ProductSchema, productPromptExtras } from '../lib/context';
 
 const generate = new Hono<{ Bindings: Env; Variables: { user: EralUser } }>();
 generate.use('*', requireAuth('generate'));
 
 const GENERATE_INSTRUCTIONS: Record<GenerateType, string> = {
-  post:    'Write a compelling social media post for a developer/builder audience. Be authentic, concise, and engaging. Include relevant hashtags at the end.',
-  caption: 'Write a short, punchy caption suitable for an image or video. Keep it under 150 characters if possible.',
-  code:    'Write clean, well-commented code. Follow best practices for the language or framework mentioned. Include a brief explanation after the code block.',
-  prompt:  'Write a detailed AI image generation prompt. Be descriptive about style, lighting, composition, colors, and mood. Format as a single flowing description.',
-  docs:    'Write clear, developer-friendly documentation. Use markdown formatting with headers, code blocks, and examples where appropriate.',
-  email:   'Write a professional but friendly email. Keep it concise and action-oriented.',
-  summary: 'Write a concise summary that captures the key points. Use bullet points for clarity.',
-  rewrite: 'Rewrite the material so it is clearer, cleaner, and more natural while preserving the original meaning.',
-  expand:  'Expand the material into a more complete draft. If the input is a brief or instruction, turn it into polished finished content instead of describing what you would write.',
-  shorten: 'Shorten the material aggressively while keeping the core meaning, key facts, and intended tone.',
-  improve: 'Improve the material for clarity, structure, tone, and polish while keeping the author intent intact.',
+  post:    'Generate professional social media content for a technical audience. Focus on clarity, value, and builder-centric insights. Do not use emojis.',
+  caption: 'Generate a direct, high-impact caption. Maximum 150 characters. Do not use emojis.',
+  code:    'Generate production-ready, well-structured code. Adhere to established best practices and include essential technical commentary. Do not use emojis.',
+  prompt:  'Generate a precise, technical description for AI image synthesis. Focus on composition, lighting, and specific artistic style directives. Do not use emojis.',
+  docs:    'Generate clear, structured technical documentation. Use standard markdown headers and code blocks. Focus on utility and precision. Do not use emojis.',
+  email:   'Generate a concise, professional business email. Focus on clear action items and formal tone. Do not use emojis.',
+  summary: 'Generate a precise technical summary. Use structured bullet points for core insights. Do not use emojis.',
+  rewrite: 'Refactor the provided text for maximum clarity and professional tone while maintaining original technical meaning. Do not use emojis.',
+  expand:  'Develop the provided brief into a comprehensive technical draft. Focus on depth and professional articulation. Do not use emojis.',
+  shorten: 'Condense the provided text to its essential technical points without loss of meaning. Do not use emojis.',
+  improve: 'Enhance the provided text for professional structure, clarity, and technical precision. Do not use emojis.',
 };
 
 const GenerateSchema = z.object({
@@ -29,7 +30,7 @@ const GenerateSchema = z.object({
   content: z.string().trim().min(1).max(12000).optional().describe('Existing content or a brief to transform'),
   prompt: z.string().trim().min(1).max(4000).optional().describe('Short instruction or brief'),
   context: z.string().max(8000).optional().describe('Additional context or existing content'),
-  tone: z.enum(['professional', 'casual', 'technical', 'playful']).default('casual'),
+  tone: z.enum(['professional', 'casual', 'technical', 'playful']).default('professional'),
   length: z.enum(['short', 'medium', 'long']).default('medium'),
   quality: z.enum(['fast', 'balanced', 'best']).optional(),
   product: ProductSchema,
@@ -58,16 +59,16 @@ generate.post(
     const resolvedQuality = quality ?? (length === 'long' || transformMode ? 'best' : 'balanced');
 
     const lengthGuidance: Record<string, string> = {
-      short:  'Keep it brief — under 100 words.',
-      medium: 'Aim for 100–300 words.',
-      long:   'Be comprehensive — 300+ words, with examples where helpful.',
+      short:  'Constraint: Strictly under 100 words.',
+      medium: 'Constraint: Approximately 150-250 words.',
+      long:   'Constraint: Comprehensive analysis, 400+ words.',
     };
 
     const toneGuidance: Record<string, string> = {
-      professional: 'Use a professional, polished tone.',
-      casual:       'Use a casual, conversational tone — like a builder talking to fellow builders.',
-      technical:    'Use precise technical language. Assume an experienced developer audience.',
-      playful:      'Use a fun, energetic tone with personality.',
+      professional: 'Tone: Professional, direct, and business-focused.',
+      casual:       'Tone: Direct and clear, using professional but accessible language.',
+      technical:    'Tone: Highly technical and precise. Use industry-standard terminology.',
+      playful:      'Tone: Engaging and energetic, while maintaining professional standards and avoiding fluff.',
     };
 
     const promptExtras = productPromptExtras(product, integration);
@@ -110,11 +111,13 @@ generate.post(
         },
         {
           openaiApiKey: c.env.OPENAI_API_KEY,
+          groqApiKey: c.env.GROQ_API_KEY,
           cfAI: c.env.AI,
           preferredProvider: c.env.AI_PROVIDER,
           spendMode: c.env.AI_SPEND_MODE,
           openaiModel: c.env.OPENAI_MODEL,
           openaiGenerateModel: c.env.OPENAI_GENERATE_MODEL,
+          groqModel: c.env.GROQ_MODEL,
           cfModel: c.env.CF_AI_MODEL,
           cfGenerateModel: c.env.CF_AI_GENERATE_MODEL,
           cfFallbackModel: c.env.CF_AI_FALLBACK_MODEL,

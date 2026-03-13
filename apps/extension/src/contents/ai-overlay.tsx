@@ -31,7 +31,6 @@ function AIOverlay() {
     }
     chrome.storage.sync.onChanged.addListener(listener)
 
-    // Listen for context menu "Ask Eral" / "Explain with Eral" triggers
     const msgListener = (msg: { type: string; text?: string }) => {
       if (msg.type === "ERAL_ASK" && msg.text) {
         setOpen(true)
@@ -72,8 +71,8 @@ function AIOverlay() {
     } else {
       const { accessToken } = await chrome.storage.session.get(["accessToken"])
       const errMsg = !accessToken
-        ? "Sign in to use Eral AI features."
-        : "Connection error — check your network."
+        ? "Please sign in to your WokSpec account to use Eral AI."
+        : "Failed to connect to Eral service. Please check your network."
       setMessages([...updatedMessages, { role: "assistant", content: errMsg }])
     }
     setLoading(false)
@@ -87,72 +86,65 @@ function AIOverlay() {
   }
 
   const VIOLET = "#7c3aed"
-  const VIOLET_SHADOW = "rgba(124,58,237,0.4)"
 
   if (!open) {
     return (
       <button
         onClick={() => setOpen(true)}
         style={{
-          position: "fixed", bottom: "20px", right: "20px", zIndex: 2147483646,
-          width: "40px", height: "40px", borderRadius: "50%",
+          position: "fixed", bottom: "24px", right: "24px", zIndex: 2147483646,
+          width: "48px", height: "48px", borderRadius: "14px",
           background: VIOLET, color: "white", border: "none", cursor: "pointer",
-          fontSize: "16px", display: "flex", alignItems: "center", justifyContent: "center",
-          boxShadow: `0 4px 12px ${VIOLET_SHADOW}`,
-          transition: "transform 0.15s, box-shadow 0.15s",
+          fontSize: "12px", fontWeight: "800", display: "flex", alignItems: "center", justifyContent: "center",
+          boxShadow: "0 8px 24px rgba(124,58,237,0.3)",
+          transition: "all 0.2s ease",
+          letterSpacing: "0.05em",
         }}
         aria-label="Open Eral AI"
         title="Ask Eral"
       >
-        ✦
+        ER
       </button>
     )
   }
 
   return (
     <div style={{
-      position: "fixed", bottom: "20px", right: "20px", zIndex: 2147483646,
-      width: "340px", height: "460px", borderRadius: "12px", background: "#09090b",
-      border: "1px solid #27272a", boxShadow: "0 20px 40px rgba(0,0,0,0.6)",
-      fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+      position: "fixed", bottom: "24px", right: "24px", zIndex: 2147483646,
+      width: "380px", height: "540px", borderRadius: "20px", background: "#0d0d0d",
+      border: "1px solid #2a2a2a", boxShadow: "0 20px 50px rgba(0,0,0,0.5)",
+      fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
       display: "flex", flexDirection: "column", overflow: "hidden",
     }}>
       {/* Header */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 14px", borderBottom: "1px solid #27272a", flexShrink: 0, background: "#0c0c0f" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-          <span style={{ color: VIOLET, fontSize: "16px" }}>✦</span>
-          <span style={{ color: "#fafafa", fontSize: "13px", fontWeight: 600 }}>Eral</span>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 20px", borderBottom: "1px solid #222", flexShrink: 0, background: "#141414" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <div style={{ width: "24px", height: "24px", background: VIOLET, borderRadius: "6px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "9px", fontWeight: "800", color: "white" }}>ER</div>
+          <span style={{ color: "#fff", fontSize: "14px", fontWeight: 600 }}>Eral Intelligence</span>
         </div>
-        <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
-          {messages.length > 0 && (
-            <button
-              onClick={() => { setMessages([]); sessionId.current = crypto.randomUUID() }}
-              style={{ background: "none", border: "none", color: "#52525b", cursor: "pointer", fontSize: "11px", padding: "2px 6px", borderRadius: "4px" }}
-              title="New conversation"
-            >
-              New chat
-            </button>
-          )}
-          <button onClick={() => setOpen(false)} style={{ background: "none", border: "none", color: "#71717a", cursor: "pointer", fontSize: "18px", lineHeight: 1 }}>×</button>
+        <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
+          <button onClick={() => setOpen(false)} style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "#888", cursor: "pointer", fontSize: "14px", width: "24px", height: "24px", borderRadius: "6px", display: "flex", alignItems: "center", justifyContent: "center" }}>✕</button>
         </div>
       </div>
 
       {/* Conversation thread */}
-      <div style={{ flex: 1, overflowY: "auto", padding: "12px", display: "flex", flexDirection: "column", gap: "10px" }}>
+      <div style={{ flex: 1, overflowY: "auto", padding: "20px", display: "flex", flexDirection: "column", gap: "16px" }}>
         {messages.length === 0 && (
-          <div style={{ color: "#52525b", fontSize: "12px", textAlign: "center", marginTop: "32px" }}>
-            <div style={{ fontSize: "24px", marginBottom: "8px", color: VIOLET }}>✦</div>
-            Ask anything about this page
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", opacity: 0.5 }}>
+            <div style={{ width: "40px", height: "40px", borderRadius: "12px", background: "rgba(124,58,237,0.1)", border: "1px solid rgba(124,58,237,0.2)", display: "flex", alignItems: "center", justifyContent: "center", color: VIOLET, fontWeight: "800", fontSize: "14px", marginBottom: "16px" }}>ER</div>
+            <div style={{ color: "#fff", fontSize: "14px", fontWeight: "600", marginBottom: "4px" }}>How can I help?</div>
+            <div style={{ color: "#888", fontSize: "12px" }}>Analyze or ask anything about this page.</div>
           </div>
         )}
         {messages.map((msg, i) => (
           <div key={i} style={{ display: "flex", justifyContent: msg.role === "user" ? "flex-end" : "flex-start" }}>
             <div style={{
-              maxWidth: "85%", padding: "8px 12px",
-              borderRadius: msg.role === "user" ? "12px 12px 2px 12px" : "12px 12px 12px 2px",
-              background: msg.role === "user" ? VIOLET : "#18181b",
-              border: msg.role === "user" ? "none" : "1px solid #27272a",
-              color: "#fafafa", fontSize: "12px", lineHeight: 1.6, whiteSpace: "pre-wrap",
+              maxWidth: "85%", padding: "12px 16px",
+              borderRadius: msg.role === "user" ? "16px 16px 4px 16px" : "16px 16px 16px 4px",
+              background: msg.role === "user" ? VIOLET : "#1a1a1a",
+              border: msg.role === "user" ? "none" : "1px solid #2a2a2a",
+              color: "#fff", fontSize: "14px", lineHeight: 1.6, whiteSpace: "pre-wrap",
+              boxShadow: msg.role === "user" ? "0 4px 12px rgba(124,58,237,0.2)" : "none",
             }}>
               {msg.content}
             </div>
@@ -160,8 +152,8 @@ function AIOverlay() {
         ))}
         {loading && (
           <div style={{ display: "flex", justifyContent: "flex-start" }}>
-            <div style={{ padding: "8px 14px", borderRadius: "12px 12px 12px 2px", background: "#18181b", border: "1px solid #27272a", color: "#71717a", fontSize: "12px" }}>
-              Thinking…
+            <div style={{ padding: "12px 16px", borderRadius: "16px 16px 16px 4px", background: "#1a1a1a", border: "1px solid #2a2a2a", color: "#666", fontSize: "14px" }}>
+              Processing…
             </div>
           </div>
         )}
@@ -169,17 +161,18 @@ function AIOverlay() {
       </div>
 
       {/* Input */}
-      <div style={{ padding: "10px 12px", borderTop: "1px solid #27272a", flexShrink: 0 }}>
-        <div style={{ display: "flex", gap: "8px" }}>
+      <div style={{ padding: "16px 20px 20px", borderTop: "1px solid #222", flexShrink: 0, background: "#111" }}>
+        <div style={{ display: "flex", gap: "10px", alignItems: "flex-end", background: "#1a1a1a", border: "1px solid #2a2a2a", borderRadius: "14px", padding: "2px" }}>
           <textarea
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
             onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); askEral() } }}
-            placeholder="Ask about this page… (Enter to send)"
+            placeholder="Ask anything about this page…"
             style={{
-              flex: 1, background: "#18181b", border: "1px solid #27272a",
-              borderRadius: "8px", color: "#fafafa", fontSize: "12px", padding: "8px 10px",
+              flex: 1, background: "transparent", border: "none",
+              color: "#fff", fontSize: "14px", padding: "10px 14px",
               resize: "none", outline: "none", boxSizing: "border-box", lineHeight: 1.5,
+              minHeight: "42px",
             }}
             rows={2}
           />
@@ -187,17 +180,17 @@ function AIOverlay() {
             onClick={askEral}
             disabled={!prompt.trim() || loading}
             style={{
-              background: loading || !prompt.trim() ? "#27272a" : VIOLET,
-              color: loading || !prompt.trim() ? "#52525b" : "white",
-              border: "none", borderRadius: "8px", padding: "0 12px",
-              fontSize: "16px", cursor: loading || !prompt.trim() ? "not-allowed" : "pointer",
-              flexShrink: 0,
+              width: "34px", height: "34px", margin: "4px", borderRadius: "10px",
+              background: loading || !prompt.trim() ? "#333" : VIOLET,
+              color: "white", border: "none", cursor: loading || !prompt.trim() ? "not-allowed" : "pointer",
+              display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
             }}
             title="Send (Enter)"
           >
-            ↑
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
           </button>
         </div>
+        <div style={{ textAlign: "center", fontSize: "9px", color: "#444", textTransform: "uppercase", letterSpacing: "0.15em", marginTop: "12px", fontWeight: "600" }}>Powered by WokSpec</div>
       </div>
     </div>
   )
