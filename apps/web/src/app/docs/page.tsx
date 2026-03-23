@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'API Reference — Nikita',
-  description: 'Complete Nikita API reference. Chat, generate, analyze, Studio prompts, API key management, and embeddable widget.',
+  title: 'API Reference — Nqita',
+  description: 'Complete Nqita API reference. Chat, generate, analyze, Studio prompts, API key management, and embeddable widget.',
 };
 
 // ── Primitives ────────────────────────────────────────────────────────────────

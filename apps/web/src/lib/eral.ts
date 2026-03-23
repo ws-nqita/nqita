@@ -1,4 +1,4 @@
-const ERAL_API = process.env.NEXT_PUBLIC_ERAL_API_URL ?? 'https://nikita.wokspec.org/api';
+const ERAL_API = process.env.NEXT_PUBLIC_ERAL_API_URL ?? 'https://nqita.wokspec.org/api';
 
 export interface ChatMessage {
   role: 'user' | 'assistant';

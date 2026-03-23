@@ -1,7 +1,8 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
+	"pages_build_output_dir": "out",
 	"main": ".open-next/worker.js",
-	"name": "nikita-web",
+	"name": "nqita-web",
 	"compatibility_date": "2026-03-13",
 	"compatibility_flags": [
 		"nodejs_compat",
@@ -16,7 +17,7 @@
 			// Self-reference service binding, the service name must match the worker name
 			// see https://opennext.js.org/cloudflare/caching
 			"binding": "WORKER_SELF_REFERENCE",
-			"service": "nikita-web"
+			"service": "nqita-web"
 		}
 	],
 	"r2_buckets": [
@@ -27,7 +28,7 @@
 			// Create the bucket before deploying
 			// You can change the bucket name if you want
 			// See https://developers.cloudflare.com/workers/wrangler/commands/#r2-bucket-create
-			"bucket_name": "nikita-web-opennext-cache"
+			"bucket_name": "nqita-web-opennext-cache"
 		}
 	],
 	"images": {

@@ -1,29 +1,36 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter } from 'next/font/google';
+import { Nunito, Silkscreen } from 'next/font/google';
 import './globals.css';
 
-const inter = Inter({
-  variable: '--font-inter',
+const nunito = Nunito({
+  variable: '--font-nunito',
   subsets: ['latin'],
+  display: 'swap',
+});
+
+const silkscreen = Silkscreen({
+  variable: '--font-silkscreen',
+  subsets: ['latin'],
+  weight: ['400', '700'],
   display: 'swap',
 });
 
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#ff5aa5',
+  themeColor: '#ff82bf',
 };
 
 export const metadata: Metadata = {
-  title: 'Nikita — WokSpec AI',
-  description: 'Private preview of Nikita. Join the waitlist.',
-  metadataBase: new URL('https://nikita.wokspec.org'),
+  title: 'Nqita Waitlist',
+  description: 'Join the Nqita waitlist for the pink pixel desktop companion.',
+  metadataBase: new URL('https://nqita.wokspec.org'),
   openGraph: {
     type: 'website',
-    siteName: 'Nikita',
-    url: 'https://nikita.wokspec.org',
-    title: 'Nikita — WokSpec AI',
-    description: 'Private preview of Nikita.',
+    siteName: 'Nqita',
+    url: 'https://nqita.wokspec.org',
+    title: 'Nqita Waitlist',
+    description: 'A cutesy pink pixel waitlist for the Nqita desktop companion.',
     images: [{ url: '/og.png' }],
   },
   twitter: { card: 'summary_large_image', site: '@wokspec' },
@@ -32,8 +39,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" style={{ background: '#2b0b18' }}>
-      <body className={inter.variable}>{children}</body>
+    <html lang="en" style={{ background: '#fff4fb' }}>
+      <body className={`${nunito.variable} ${silkscreen.variable}`}>{children}</body>
     </html>
   );
 }
