@@ -1,8 +1,9 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter } from 'next/font/google';
+import { Press_Start_2P } from 'next/font/google';
 import './globals.css';
 
-const inter = Inter({
+const pixelFont = Press_Start_2P({
+  weight: '400',
   subsets: ['latin'],
   display: 'swap',
 });
@@ -32,7 +33,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" style={{ background: '#fff6f9' }}>
-      <body className={inter.className}>{children}</body>
+      <body className={pixelFont.className}>{children}</body>
     </html>
   );
 }

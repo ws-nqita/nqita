@@ -95,8 +95,15 @@ export default function HomePage() {
             </span>
             <h1 className="hero-home__title">Nqita</h1>
           </div>
-          <p className="hero-home__meta">Nqita CLI</p>
           <div className="hero-home__actions">
+            <a
+              className="hero-home__text-button"
+              href="https://github.com/ws-nqita/nqita-cli"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Nqita CLI
+            </a>
             <a className="hero-home__icon-button" href="https://github.com/ws-nqita" target="_blank" rel="noreferrer" aria-label="GitHub">
               <GitHubIcon />
             </a>
@@ -109,8 +116,9 @@ export default function HomePage() {
             >
               <DiscordIcon />
             </a>
-            <a className="hero-home__text-button" href="https://wokspec.org/support" target="_blank" rel="noreferrer">
-              Submit
+            <a className="hero-home__text-button hero-home__text-button--contact" href="https://wokspec.org/support" target="_blank" rel="noreferrer">
+              <span className="hero-home__text-button-label">Submit</span>
+              <span className="hero-home__text-button-expand">contact</span>
             </a>
           </div>
         </div>
@@ -122,32 +130,27 @@ export default function HomePage() {
         </h2>
 
         <div className="sprite-module sprite-module--single">
-          <div className="sprite-viewer">
-            <div className="sprite-viewer__panel">
-              <div className="sprite-viewer__scene" aria-hidden="true">
-                <span className="sprite-viewer__wall" />
-                <span className="sprite-viewer__floor" />
-                <span className="sprite-viewer__pedestal" />
+          <div className="sprite-gallery">
+            <button className="sprite-card sprite-card--side" type="button" onClick={() => go(-1)} aria-label="Previous sprite">
+              <span className="sprite-card__glass" aria-hidden="true" />
+              <img className="sprite-card__image sprite-card__image--side" src={previousSprite.src} alt="" aria-hidden="true" />
+            </button>
+
+            <div className="sprite-card sprite-card--featured">
+              <div className="sprite-viewer__panel">
+                <div className="sprite-viewer__scene" aria-hidden="true">
+                  <span className="sprite-viewer__wall" />
+                  <span className="sprite-viewer__floor" />
+                  <span className="sprite-viewer__pedestal" />
+                </div>
+                <img className="sprite-viewer__sprite" src={activeSprite.src} alt={activeSprite.alt} />
               </div>
-
-              <button
-                className="sprite-viewer__hover sprite-viewer__hover--left"
-                type="button"
-                onClick={() => go(-1)}
-                aria-label="Previous sprite"
-              />
-
-              <button
-                className="sprite-viewer__hover sprite-viewer__hover--right"
-                type="button"
-                onClick={() => go(1)}
-                aria-label="Next sprite"
-              />
-
-              <img className="sprite-viewer__sprite sprite-viewer__sprite--ghost-left" src={previousSprite.src} alt="" aria-hidden="true" />
-              <img className="sprite-viewer__sprite" src={activeSprite.src} alt={activeSprite.alt} />
-              <img className="sprite-viewer__sprite sprite-viewer__sprite--ghost-right" src={nextSprite.src} alt="" aria-hidden="true" />
             </div>
+
+            <button className="sprite-card sprite-card--side" type="button" onClick={() => go(1)} aria-label="Next sprite">
+              <span className="sprite-card__glass" aria-hidden="true" />
+              <img className="sprite-card__image sprite-card__image--side" src={nextSprite.src} alt="" aria-hidden="true" />
+            </button>
           </div>
         </div>
       </section>
