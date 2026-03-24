@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "deploy": "npm run build && wrangler pages deploy out --project-name nqita --branch main --commit-dirty=true",
+    "deploy": "npm run build && node scripts/deploy-pages.mjs",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
