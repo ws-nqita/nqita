@@ -1,57 +1,52 @@
 'use client';
 
-import { FormEvent, useEffect, useState } from 'react';
-import { roleOptions, spriteOptions, type RoleOption } from '../content/site';
+import Link from 'next/link';
+import { useEffect } from 'react';
+import { Press_Start_2P } from 'next/font/google';
+import { buildPlan, documentationLinks, homepageFacts, spriteOptions } from '../content/site';
 
-type WaitlistEntry = {
-  email: string;
-  role: RoleOption;
-  wantsUpdates: boolean;
-  createdAt: string;
-};
+const pixelFont = Press_Start_2P({
+  weight: '400',
+  subsets: ['latin'],
+  display: 'swap',
+});
 
-const storageKey = 'nqita-waitlist-v1';
+const uniqueSprites = spriteOptions.filter(
+  (sprite, index, allSprites) => allSprites.findIndex((entry) => entry.src === sprite.src) === index,
+);
 
-function readStoredEntries(): WaitlistEntry[] {
-  if (typeof window === 'undefined') {
-    return [];
-  }
+function GitHubIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path
+        fill="currentColor"
+        d="M12 2C6.48 2 2 6.58 2 12.22c0 4.5 2.87 8.31 6.84 9.66.5.1.68-.22.68-.49
+        0-.24-.01-1.04-.01-1.89-2.78.62-3.37-1.21-3.37-1.21-.45-1.18-1.11-1.49-1.11-1.49-.91-.64.07-.62.07-.62
+        1 .07 1.53 1.06 1.53 1.06.9 1.58 2.35 1.12 2.92.85.09-.67.35-1.12.63-1.38-2.22-.26-4.56-1.14-4.56-5.08
+        0-1.12.39-2.03 1.03-2.75-.11-.26-.45-1.3.1-2.72 0 0 .84-.28 2.75 1.05A9.3 9.3 0 0 1 12 6.84c.85 0 1.7.12 2.5.35
+        1.9-1.33 2.75-1.05 2.75-1.05.54 1.42.2 2.46.1 2.72.64.72 1.03 1.63 1.03 2.75 0 3.95-2.34 4.81-4.57 5.07.36.32.68.95.68 1.92
+        0 1.39-.01 2.5-.01 2.84 0 .27.18.6.69.49A10.23 10.23 0 0 0 22 12.22C22 6.58 17.52 2 12 2Z"
+      />
+    </svg>
+  );
+}
 
-  try {
-    const raw = window.localStorage.getItem(storageKey);
-    if (!raw) {
-      return [];
-    }
-
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
-  }
+function DiscordIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path
+        fill="currentColor"
+        d="M20.32 4.37A16.57 16.57 0 0 0 16.23 3a11.26 11.26 0 0 0-.52 1.08 15.3 15.3 0 0 0-4.44 0A11.2 11.2 0 0 0 10.74 3
+        16.45 16.45 0 0 0 6.65 4.37C4.06 8.17 3.36 11.88 3.71 15.53a16.7 16.7 0 0 0 5.02 2.55c.41-.57.77-1.18 1.08-1.82
+        -.59-.23-1.15-.51-1.68-.84.14-.1.28-.21.41-.32 3.24 1.55 6.76 1.55 9.96 0 .14.11.27.22.41.32-.54.33-1.1.61-1.68.84.31.64.67 1.25 1.08 1.82
+        a16.63 16.63 0 0 0 5.02-2.55c.41-4.23-.7-7.91-2.99-11.16ZM9.68 13.28c-.97 0-1.76-.91-1.76-2.03 0-1.13.78-2.04 1.76-2.04.99 0 1.77.92 1.76 2.04
+        0 1.12-.78 2.03-1.76 2.03Zm4.64 0c-.97 0-1.76-.91-1.76-2.03 0-1.13.78-2.04 1.76-2.04.99 0 1.77.92 1.76 2.04 0 1.12-.77 2.03-1.76 2.03Z"
+      />
+    </svg>
+  );
 }
 
 export default function HomePage() {
-  const [email, setEmail] = useState('');
-  const [role, setRole] = useState<RoleOption>('Terminal User');
-  const [wantsUpdates, setWantsUpdates] = useState(true);
-  const [submitted, setSubmitted] = useState(false);
-  const [savedCount, setSavedCount] = useState(0);
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  useEffect(() => {
-    const entries = readStoredEntries();
-    setSavedCount(entries.length);
-    setSubmitted(entries.some((entry) => entry.email.toLowerCase() === email.toLowerCase()));
-  }, [email]);
-  
-  useEffect(() => {
-    const interval = window.setInterval(() => {
-      setActiveIndex((current) => (current + 1) % spriteOptions.length);
-    }, 2400);
-
-    return () => window.clearInterval(interval);
-  }, []);
-
   useEffect(() => {
     const handleMove = (event: MouseEvent) => {
       document.documentElement.style.setProperty('--cursor-x', `${event.clientX}px`);
@@ -62,197 +57,163 @@ export default function HomePage() {
     return () => window.removeEventListener('mousemove', handleMove);
   }, []);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    const normalizedEmail = email.trim().toLowerCase();
-    if (!normalizedEmail) {
-      return;
-    }
-
-    const nextEntry: WaitlistEntry = {
-      email: normalizedEmail,
-      role,
-      wantsUpdates,
-      createdAt: new Date().toISOString(),
-    };
-
-    const entries = readStoredEntries();
-    const deduped = entries.filter((entry) => entry.email !== normalizedEmail);
-    const nextEntries = [nextEntry, ...deduped].slice(0, 250);
-
-    window.localStorage.setItem(storageKey, JSON.stringify(nextEntries));
-    setSavedCount(nextEntries.length);
-    setSubmitted(true);
-  }
-
-  const activeSprite = spriteOptions[activeIndex];
-
   return (
-    <main className="neon-home">
-      <div className="pixel-field" aria-hidden="true" />
+    <main className="site-page">
+      <div className="site-grid" aria-hidden="true" />
 
-      <header className="simple-shell simple-topbar">
-        <a className="simple-wordmark" href="#waitlist-form">
-          <span className="simple-wordmark__title">nqita</span>
-        </a>
+      <header className="site-shell site-topbar">
+        <Link className="site-brand" href="/">
+          <span>Nqita</span>
+          <small>open source desktop companion by WokSpec</small>
+        </Link>
 
-        <nav className="simple-nav" aria-label="Primary">
-          <a href="#waitlist-form">waitlist</a>
-          <a href="#current-shells">sprites</a>
-          <a href="https://github.com/ws-nqita" target="_blank" rel="noreferrer">
-            github
-          </a>
+        <nav className="site-nav" aria-label="Primary">
+          <a href="#about">about</a>
+          <a href="#docs">docs</a>
+          <a href="#sprites">sprites</a>
+          <Link href="/contribute">contribute</Link>
         </nav>
       </header>
 
-      <section className="simple-shell simple-hero">
-        <div className="simple-hero__copy">
-          <p className="simple-pill">Nqita</p>
-          <h1>Nqita</h1>
-          <p className="simple-lede">Waitlist. Potential sprites.</p>
+      <section className="site-shell hero-flow">
+        <div className="hero-copy">
+          <p className="eyebrow">WokSpec is building Nqita in the open.</p>
+          <h1 className={`hero-title ${pixelFont.className}`}>Nqita</h1>
+          <p className="hero-lede">
+            Nqita is a pixel desktop companion meant to live on your computer, not inside a tab.
+            The live prototype today is the CLI stack. The bigger goal is a visible local runtime
+            with a sprite, memory, and a desktop presence that feels alive without getting in your
+            way.
+          </p>
 
-          <div className="simple-actions">
-            <a className="simple-button simple-button--primary" href="#waitlist-form">
-              join waitlist
-            </a>
-            <a className="simple-button simple-button--secondary" href="#current-shells">
-              view sprites
-            </a>
-          </div>
-
-          <div className="simple-stats">
-            <div className="simple-stat">
-              <span>saved locally</span>
-              <strong>{savedCount.toString().padStart(2, '0')}</strong>
-            </div>
-            <div className="simple-stat">
-              <span>needed</span>
-              <strong>artists, animators, devs</strong>
-            </div>
-          </div>
-        </div>
-
-        <div className="simple-hero__art">
-          <div className="hero-preview hero-preview--tank">
-            <div className="hero-preview__label">
-              sprite {String(activeIndex + 1).padStart(2, '0')} / {String(spriteOptions.length).padStart(2, '0')}
-            </div>
-            <div className="tank-bubbles" aria-hidden="true">
-              <span />
-              <span />
-              <span />
-              <span />
-            </div>
-            <img
-              key={activeSprite.src}
-              className="hero-preview__sprite"
-              src={activeSprite.src}
-              alt={activeSprite.name}
-            />
-            <p className="hero-preview__note">{activeSprite.name}</p>
-          </div>
-        </div>
-      </section>
-
-      <section className="simple-shell simple-grid">
-        <article className="simple-card" id="waitlist-form">
-          <div className="simple-card__eyebrow">waitlist</div>
-          <h2>early access</h2>
-          <p>updates, builds, drops.</p>
-
-          {submitted ? (
-            <div className="simple-success" role="status" aria-live="polite">
-              <strong>you&apos;re on the list.</strong>
-              <p>This signup is currently saved locally on this device.</p>
-            </div>
-          ) : (
-            <form className="simple-form" onSubmit={handleSubmit}>
-              <label>
-                email
-                <input
-                  type="email"
-                  required
-                  placeholder="you@example.com"
-                  value={email}
-                  onChange={(event) => setEmail(event.target.value)}
-                />
-              </label>
-
-              <label>
-                role
-                <select value={role} onChange={(event) => setRole(event.target.value as RoleOption)}>
-                  {roleOptions.map((option) => (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </select>
-              </label>
-
-              <label className="simple-checkbox">
-                <input
-                  type="checkbox"
-                  checked={wantsUpdates}
-                  onChange={(event) => setWantsUpdates(event.target.checked)}
-                />
-                <span>send updates about builds and sprite direction</span>
-              </label>
-
-              <button className="simple-button simple-button--primary" type="submit">
-                join waitlist
-              </button>
-            </form>
-          )}
-        </article>
-
-        <article className="simple-card simple-card--soft">
-          <div className="simple-card__eyebrow">help wanted</div>
-          <h2>artists, animators, devs</h2>
-          <ul className="simple-list">
-            <li>pixel art</li>
-            <li>animation</li>
-            <li>runtime</li>
-          </ul>
-        </article>
-      </section>
-
-      <section className="simple-shell simple-sprites" id="current-shells">
-        <div className="section-heading">
-          <div className="panel__eyebrow">sprite candidates</div>
-          <h2>pick one</h2>
-        </div>
-
-        <div className="simple-sprite-grid">
-          {spriteOptions.map((sprite, index) => (
-            <button
-              key={sprite.src}
-              className={`simple-sprite-card${index === activeIndex ? ' simple-sprite-card--active' : ''}`}
-              type="button"
-              onClick={() => setActiveIndex(index)}
-              aria-label={`View ${sprite.name}`}
+          <div className="hero-actions">
+            <a
+              className="action-button action-button--primary"
+              href="https://github.com/ws-nqita"
+              target="_blank"
+              rel="noreferrer"
             >
-              <div className="simple-sprite-card__media simple-sprite-card__media--tank">
-                <div className="tank-bubbles tank-bubbles--small" aria-hidden="true">
-                  <span />
-                  <span />
-                  <span />
-                </div>
-                <img src={sprite.src} alt="" />
-              </div>
-            </button>
+              <GitHubIcon />
+              GitHub
+            </a>
+            <a
+              className="action-button action-button--secondary"
+              href="https://github.com/ws-nqita/nqita-cli"
+              target="_blank"
+              rel="noreferrer"
+            >
+              nqita-cli repo
+            </a>
+            <Link className="action-button action-button--ghost" href="/docs">
+              Read docs
+            </Link>
+          </div>
+
+          <p className="human-callout">
+            If you have real design, art direction, sprite animation, or pixel art experience,
+            please help our open source project by WokSpec. This part matters. Nqita will only feel
+            right if artists and designers help shape her.
+          </p>
+        </div>
+
+        <div className="hero-stage">
+          <div className="hero-stage__backdrop" />
+          <img
+            className="hero-stage__room"
+            src="/nqita-sprites/server-room.png"
+            alt=""
+          />
+          <img
+            className="hero-stage__sprite"
+            src="/nqita-sprites/current/chibi-cyborg.gif"
+            alt="Animated preview of Nqita on the desktop"
+          />
+
+          <div className="coming-soon-chip" aria-label="Discord bot coming soon">
+            <DiscordIcon />
+            <span>Discord bot coming soon</span>
+          </div>
+        </div>
+      </section>
+
+      <section className="site-shell content-river" id="about">
+        <div className="section-heading">
+          <p className="eyebrow">What Nqita is becoming</p>
+          <h2>Clear idea, real prototype, open work.</h2>
+        </div>
+
+        <div className="content-columns">
+          <div className="prose-stack">
+            {homepageFacts.map((fact) => (
+              <p key={fact}>{fact}</p>
+            ))}
+          </div>
+
+          <ol className="plain-steps">
+            {buildPlan.map((step) => (
+              <li key={step}>{step}</li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <section className="site-shell docs-river" id="docs">
+        <div className="section-heading section-heading--tight">
+          <p className="eyebrow">Documentation on the site</p>
+          <h2>Read the plan without digging through jargon.</h2>
+          <p className="section-copy">
+            The docs explain the same simple idea from different angles: Nqita should run locally,
+            stay visible, respect permissions, and keep the sprite behavior tied to the same runtime
+            state as the chat and tools.
+          </p>
+        </div>
+
+        <div className="docs-list">
+          {documentationLinks.map((link) => (
+            <a
+              key={link.href}
+              className="doc-row"
+              href={link.href}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <span className="doc-row__title">{link.title}</span>
+              <span className="doc-row__body">{link.description}</span>
+            </a>
           ))}
         </div>
       </section>
 
-      <footer className="simple-shell simple-footer">
-        <span>nqita.wokspec.org</span>
-        <div className="simple-nav">
-          <a href="#waitlist-form">waitlist</a>
-          <a href="#current-shells">sprites</a>
+      <section className="site-shell sprite-river" id="sprites">
+        <div className="section-heading section-heading--tight">
+          <p className="eyebrow">Potential sprites</p>
+          <h2>Potential sprites.</h2>
+        </div>
+
+        <div className="sprite-gallery">
+          {uniqueSprites.map((sprite, index) => (
+            <div key={sprite.id} className="sprite-stage-card" aria-label={`Potential sprite ${index + 1}`}>
+              <img className="sprite-stage-card__image" src={sprite.src} alt={sprite.alt} />
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <footer className="site-shell site-footer">
+        <div>
+          <strong>Nqita</strong>
+          <p>Open source desktop companion by WokSpec.</p>
+        </div>
+
+        <div className="site-footer__links">
           <a href="https://github.com/ws-nqita" target="_blank" rel="noreferrer">
-            ws-nqita
+            GitHub
           </a>
+          <a href="https://github.com/ws-nqita/nqita-cli" target="_blank" rel="noreferrer">
+            nqita-cli
+          </a>
+          <Link href="/docs">Docs</Link>
+          <Link href="/contribute">Contribute</Link>
         </div>
       </footer>
     </main>

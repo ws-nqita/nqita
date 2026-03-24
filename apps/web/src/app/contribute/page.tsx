@@ -1,146 +1,112 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Contribute to Nqita',
-  description: 'Open-source contribution guide for artists, developers, designers, and builders helping bring Nqita to life.',
+  title: 'Contribute - Nqita',
+  description: 'Contribution guide for artists, designers, and developers helping build Nqita.',
 };
 
 const tracks = [
   {
-    title: 'Pixel artists and animators',
+    title: 'Pixel art and animation',
     body:
-      'Nqita needs idle loops, walk cycles, reactions, researching scenes, desk props, and a stronger visual vocabulary. This is one of the highest leverage areas in the whole project.',
-    bullets: [
-      'Start with idle, walk, and reaction sprite sheets.',
-      'Use the sprite spec in the main repo as the source of truth.',
-      'Open draft PRs early so style direction can converge in public.',
-    ],
+      'This is one of the biggest needs in the whole project. We need walk cycles, idle loops, reactions, stronger character direction, and better scene art.',
   },
   {
-    title: 'Systems and platform developers',
+    title: 'Design and interface direction',
     body:
-      'The daemon, CLI, provider routing, memory, overlay bridge, and OS-specific embodiment stack all need real implementation work.',
-    bullets: [
-      'Good starting surfaces: nqita-cli prototype, daemon protocol, provider adapters, and desktop overlay experiments.',
-      'Groq is the native default, but the system should stay cleanly BYOK-capable.',
-      'Cross-platform overlay help is especially valuable.',
-    ],
+      'We need help shaping the bubble, the desktop overlay, the logs view, and the overall feel so the project stays human and clear instead of looking bolted together.',
   },
   {
-    title: 'Designers, UX, and product contributors',
+    title: 'Runtime and platform engineering',
     body:
-      'Nqita should feel present without being annoying. That balance depends on interaction design, motion judgment, and restraint.',
-    bullets: [
-      'Bubble design, onboarding, mode transitions, and desktop presence all need iteration.',
-      'Full-view logs and sprite behavior should feel coherent rather than bolted together.',
-      'Mockups, interaction notes, and critique are all useful contributions.',
-    ],
+      'The daemon, permissions, memory, overlay bridge, and platform work still need contributors who like systems problems and real product edges.',
   },
 ];
 
 export default function ContributePage() {
   return (
-    <main className="waitlist-page">
-      <div className="waitlist-grid" aria-hidden="true" />
+    <main className="site-page site-page--docs">
+      <div className="site-grid" aria-hidden="true" />
 
-      <header className="topbar shell">
-        <a className="brandmark" href="/">
-          <span className="brandmark__sprite">NQ</span>
-          <span>
-            <strong>Nqita</strong>
-            <small>open source desktop companion</small>
-          </span>
-        </a>
+      <header className="site-shell site-topbar">
+        <Link className="site-brand" href="/">
+          <span>Nqita</span>
+          <small>open source desktop companion by WokSpec</small>
+        </Link>
 
-        <nav className="topbar__nav" aria-label="Primary">
-          <a href="/">Home</a>
-          <a href="/docs">Docs</a>
+        <nav className="site-nav" aria-label="Primary">
+          <Link href="/">home</Link>
+          <Link href="/docs">docs</Link>
+          <a href="#help">help</a>
           <a href="https://github.com/ws-nqita" target="_blank" rel="noreferrer">
-            GitHub
+            github
           </a>
         </nav>
       </header>
 
-      <section className="shell contribute-hero">
-        <article className="panel panel--soft">
-          <div className="panel__eyebrow">help bring her to life</div>
-          <h1 className="contribute-title">Nqita needs more than code.</h1>
-          <p>
-            This project only becomes real if artists, runtime developers, platform engineers,
-            designers, and curious builders all push on it together. We are actively recruiting open
-            source contributors who want to help shape both the character and the system.
-          </p>
-          <div className="hero__actions">
-            <a
-              className="pixel-button pixel-button--primary"
-              href="https://github.com/ws-nqita/nqita/blob/main/CONTRIBUTING.md"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Read main CONTRIBUTING
-            </a>
-            <a
-              className="pixel-button pixel-button--secondary"
-              href="https://github.com/ws-nqita"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Browse the org
-            </a>
-          </div>
-        </article>
+      <section className="site-shell page-intro" id="help">
+        <p className="eyebrow">Contribute</p>
+        <h1>Nqita needs artists and designers in a serious way.</h1>
+        <p className="section-copy">
+          If you have experience with pixel art, sprite animation, interaction design, interface
+          systems, or art direction, please help this open source WokSpec project. Engineering help
+          matters too, but the visual and design side is one of the clearest gaps right now.
+        </p>
       </section>
 
-      <section className="shell contribute-grid">
-        {tracks.map((track) => (
-          <article key={track.title} className="panel">
-            <div className="panel__eyebrow">contributor track</div>
-            <h2>{track.title}</h2>
-            <p>{track.body}</p>
-            <ul className="proof-list">
-              {track.bullets.map((bullet) => (
-                <li key={bullet}>{bullet}</li>
-              ))}
-            </ul>
-          </article>
-        ))}
+      <section className="site-shell notes-river">
+        <div className="prose-stack prose-stack--wide">
+          {tracks.map((track) => (
+            <p key={track.title}>
+              <strong>{track.title}:</strong> {track.body}
+            </p>
+          ))}
+        </div>
       </section>
 
-      <section className="shell lower-grid">
-        <article className="panel">
-          <div className="panel__eyebrow">current surfaces</div>
-          <h2>Where contributions land right now.</h2>
-          <ul className="proof-list">
-            <li>`ws-nqita/nqita` for the main platform, docs, web presence, and sprite-system contracts.</li>
-            <li>`ws-nqita/nqita-cli` for the local daemon, chat CLI, and Groq-first prototype runtime.</li>
-            <li>The contribution docs in the main repo are the canonical entry point for deeper technical context.</li>
-          </ul>
-        </article>
+      <section className="site-shell docs-river">
+        <div className="section-heading section-heading--tight">
+          <p className="eyebrow">Where to start</p>
+          <h2>Public entry points.</h2>
+        </div>
 
-        <article className="panel panel--code">
-          <div className="panel__eyebrow">fastest onboarding</div>
-          <h2>Open source quickstart.</h2>
-          <pre>{`git clone git@github.com:ws-nqita/nqita.git
-git clone git@github.com:ws-nqita/nqita-cli.git
-
-# Read first:
-- nqita/README.md
-- nqita/CONTRIBUTING.md
-- nqita/docs/SPRITE_SYSTEM.md
-- nqita-cli/README.md`}</pre>
-        </article>
-      </section>
-
-      <footer className="footer shell">
-        <span>nqita.wokspec.org/contribute</span>
-        <div className="footer__links">
-          <a href="/">Home</a>
-          <a href="/docs">Docs</a>
-          <a href="https://github.com/ws-nqita" target="_blank" rel="noreferrer">
-            ws-nqita
+        <div className="docs-list">
+          <a
+            className="doc-row"
+            href="https://github.com/ws-nqita/nqita/blob/main/CONTRIBUTING.md"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <span className="doc-row__title">Main contributing guide</span>
+            <span className="doc-row__body">
+              Start here for the main project contribution path and repo expectations.
+            </span>
+          </a>
+          <a
+            className="doc-row"
+            href="https://github.com/ws-nqita/nqita/blob/main/docs/SPRITE_SYSTEM.md"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <span className="doc-row__title">Sprite system spec</span>
+            <span className="doc-row__body">
+              This is the most relevant doc if you want to help with pixel art and animation.
+            </span>
+          </a>
+          <a
+            className="doc-row"
+            href="https://github.com/ws-nqita/nqita-cli"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <span className="doc-row__title">nqita-cli repo</span>
+            <span className="doc-row__body">
+              This is the runnable public prototype for the daemon, terminal flow, and sprite state.
+            </span>
           </a>
         </div>
-      </footer>
+      </section>
     </main>
   );
 }
