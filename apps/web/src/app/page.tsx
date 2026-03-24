@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { Press_Start_2P } from 'next/font/google';
 import { spriteOptions } from '../content/site';
@@ -42,21 +41,6 @@ function DiscordIcon() {
   );
 }
 
-function ArrowIcon({ direction }: { direction: 'left' | 'right' }) {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path
-        fill="currentColor"
-        d={
-          direction === 'left'
-            ? 'M14.7 5.3 8 12l6.7 6.7 1.4-1.4L10.8 12l5.3-5.3-1.4-1.4Z'
-            : 'm9.3 5.3-1.4 1.4 5.3 5.3-5.3 5.3 1.4 1.4L16 12 9.3 5.3Z'
-        }
-      />
-    </svg>
-  );
-}
-
 export default function HomePage() {
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -68,10 +52,10 @@ export default function HomePage() {
 
       root.style.setProperty('--cursor-x', `${event.clientX}px`);
       root.style.setProperty('--cursor-y', `${event.clientY}px`);
-      root.style.setProperty('--tilt-x', `${(-yRatio * 12).toFixed(2)}deg`);
-      root.style.setProperty('--tilt-y', `${(xRatio * 14).toFixed(2)}deg`);
-      root.style.setProperty('--glow-x', `${50 + xRatio * 18}%`);
-      root.style.setProperty('--glow-y', `${38 + yRatio * 18}%`);
+      root.style.setProperty('--tilt-x', `${(-yRatio * 16).toFixed(2)}deg`);
+      root.style.setProperty('--tilt-y', `${(xRatio * 16).toFixed(2)}deg`);
+      root.style.setProperty('--scene-shift-x', `${(xRatio * 24).toFixed(2)}px`);
+      root.style.setProperty('--scene-shift-y', `${(yRatio * 18).toFixed(2)}px`);
     };
 
     window.addEventListener('mousemove', handleMove, { passive: true });
@@ -91,24 +75,45 @@ export default function HomePage() {
           <div className="scene-camera">
             <div className="scene-room">
               <div className="scene-floor" />
-              <div className="pixel-cube pixel-cube--left">
-                <span />
-                <span />
-                <span />
-              </div>
-              <div className="pixel-cube pixel-cube--center">
-                <span />
-                <span />
-                <span />
-              </div>
-              <div className="pixel-cube pixel-cube--right">
-                <span />
-                <span />
-                <span />
-              </div>
               <div className="scene-wall scene-wall--back" />
               <div className="scene-wall scene-wall--left" />
               <div className="scene-wall scene-wall--right" />
+              <div className="scene-beam scene-beam--left" />
+              <div className="scene-beam scene-beam--right" />
+              <div className="scene-console">
+                <span className="scene-console__screen" />
+                <span className="scene-console__base" />
+              </div>
+              <div className="pixel-cube pixel-cube--stack-a pixel-cube--tall">
+                <span />
+                <span />
+                <span />
+              </div>
+              <div className="pixel-cube pixel-cube--stack-b">
+                <span />
+                <span />
+                <span />
+              </div>
+              <div className="pixel-cube pixel-cube--stack-c pixel-cube--wide">
+                <span />
+                <span />
+                <span />
+              </div>
+              <div className="pixel-cube pixel-cube--stack-d">
+                <span />
+                <span />
+                <span />
+              </div>
+              <div className="pixel-cube pixel-cube--stack-e pixel-cube--small">
+                <span />
+                <span />
+                <span />
+              </div>
+              <div className="pixel-cube pixel-cube--stack-f pixel-cube--small">
+                <span />
+                <span />
+                <span />
+              </div>
             </div>
           </div>
         </div>
@@ -116,19 +121,19 @@ export default function HomePage() {
         <div className="hero-home__content">
           <h1 className="hero-home__title">Nqita</h1>
           <div className="hero-home__actions">
-            <a href="https://github.com/ws-nqita" target="_blank" rel="noreferrer">
+            <a href="https://github.com/ws-nqita" target="_blank" rel="noreferrer" aria-label="GitHub">
               <GitHubIcon />
-              GitHub
             </a>
-            <a href="https://discord.gg/juunCaGpTW" target="_blank" rel="noreferrer">
+            <a href="https://discord.gg/juunCaGpTW" target="_blank" rel="noreferrer" aria-label="Discord">
               <DiscordIcon />
-              Discord
             </a>
           </div>
           <p className="hero-home__help">We need help.</p>
           <p className="hero-home__need">Pixel art. Motion. Frontend.</p>
-          <a className="hero-home__jump" href="#sprites">
-            potential sprites
+          <a className="hero-home__jump" href="#sprites" aria-label="Scroll to potential sprites">
+            <span />
+            <span />
+            <span />
           </a>
         </div>
       </section>
@@ -136,52 +141,56 @@ export default function HomePage() {
       <section className="home-shell home-section" id="sprites">
         <div className="home-section__head">
           <p>Potential sprites</p>
-          <span>
-            {String(activeIndex + 1).padStart(2, '0')} / {String(spriteOptions.length).padStart(2, '0')}
-          </span>
         </div>
 
         <div className="sprite-viewer">
-          <button
-            className="sprite-viewer__nav sprite-viewer__nav--left"
-            type="button"
-            onClick={() => go(-1)}
-            aria-label="Previous sprite"
-          >
-            <ArrowIcon direction="left" />
-          </button>
-
           <div className="sprite-viewer__panel">
             <div className="sprite-viewer__scene" aria-hidden="true">
+              <span className="sprite-viewer__plane sprite-viewer__plane--back" />
               <span className="sprite-viewer__plane sprite-viewer__plane--left" />
               <span className="sprite-viewer__plane sprite-viewer__plane--right" />
               <span className="sprite-viewer__plane sprite-viewer__plane--floor" />
+              <span className="sprite-viewer__cube sprite-viewer__cube--left" />
+              <span className="sprite-viewer__cube sprite-viewer__cube--right" />
             </div>
+
+            <button
+              className="sprite-viewer__hover sprite-viewer__hover--left"
+              type="button"
+              onClick={() => go(-1)}
+              aria-label="Previous sprite"
+            >
+              <span className="sprite-viewer__hover-label">
+                <i />
+                previous
+              </span>
+            </button>
+
+            <button
+              className="sprite-viewer__hover sprite-viewer__hover--right"
+              type="button"
+              onClick={() => go(1)}
+              aria-label="Next sprite"
+            >
+              <span className="sprite-viewer__hover-label">
+                <i />
+                next
+              </span>
+            </button>
+
             <img className="sprite-viewer__sprite" src={activeSprite.src} alt={activeSprite.alt} />
           </div>
-
-          <button
-            className="sprite-viewer__nav sprite-viewer__nav--right"
-            type="button"
-            onClick={() => go(1)}
-            aria-label="Next sprite"
-          >
-            <ArrowIcon direction="right" />
-          </button>
         </div>
       </section>
 
       <section className="home-shell home-section home-section--info">
         <div className="home-info">
           <p>Open source desktop companion by WokSpec.</p>
-          <p>Working now: the local runtime and CLI.</p>
-          <p>We need help with art, design, motion, and frontend.</p>
-          <div className="home-info__links">
-            <Link href="/docs">docs</Link>
-            <a href="https://github.com/ws-nqita/nqita-cli" target="_blank" rel="noreferrer">
-              nqita-cli
-            </a>
-          </div>
+          <p>Working now: local runtime and CLI.</p>
+          <p>Everything else lives on GitHub.</p>
+          <a href="https://github.com/ws-nqita" target="_blank" rel="noreferrer">
+            github.com/ws-nqita
+          </a>
         </div>
       </section>
     </main>
