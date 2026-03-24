@@ -93,34 +93,44 @@ export default function HomePage() {
     <main className="site-page home-page">
       <section className="home-shell hero-home">
         <div className="hero-home__minimal">
-          <div className="hero-home__panel-glow" aria-hidden="true" />
+          <div className="hero-home__platform hero-home__platform--back" aria-hidden="true" />
+          <div className="hero-home__platform hero-home__platform--mid" aria-hidden="true" />
           <div className={`hero-home__title-wrap ${pixelFont.className}`}>
             <span className="hero-home__title-shadow" aria-hidden="true">
+              Nqita
+            </span>
+            <span className="hero-home__title-bevel" aria-hidden="true">
               Nqita
             </span>
             <h1 className="hero-home__title">Nqita</h1>
           </div>
           <div className="hero-home__actions">
-            <a
-              className="hero-home__text-button"
-              href="https://github.com/ws-nqita/nqita-cli"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Nqita CLI
-            </a>
-            <a className="hero-home__icon-button" href="https://github.com/ws-nqita" target="_blank" rel="noreferrer" aria-label="GitHub">
-              <GitHubIcon />
-            </a>
-            <a
-              className="hero-home__icon-button hero-home__icon-button--discord"
-              href="https://discord.gg/juunCaGpTW"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Discord"
-            >
-              <DiscordIcon />
-            </a>
+            <div className="hero-home__action-well">
+              <a
+                className="hero-home__text-button"
+                href="https://github.com/ws-nqita/nqita-cli"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Nqita CLI
+              </a>
+            </div>
+            <div className="hero-home__action-well">
+              <a className="hero-home__icon-button" href="https://github.com/ws-nqita" target="_blank" rel="noreferrer" aria-label="GitHub">
+                <GitHubIcon />
+              </a>
+            </div>
+            <div className="hero-home__action-well">
+              <a
+                className="hero-home__icon-button hero-home__icon-button--discord"
+                href="https://discord.gg/juunCaGpTW"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Discord"
+              >
+                <DiscordIcon />
+              </a>
+            </div>
           </div>
         </div>
       </section>
@@ -171,7 +181,7 @@ export default function HomePage() {
             <p>or work with us</p>
             <a className="hero-home__text-button hero-home__text-button--contact" href="https://wokspec.org/support" target="_blank" rel="noreferrer">
               <span className="hero-home__text-button-label">Submit</span>
-              <span className="hero-home__text-button-expand">contact</span>
+              <span className="hero-home__text-button-expand">a sprite! or contact us.</span>
             </a>
           </div>
         </div>
