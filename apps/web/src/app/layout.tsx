@@ -1,9 +1,9 @@
 import type { Metadata, Viewport } from 'next';
-import { Nunito, Silkscreen } from 'next/font/google';
+import { Inter, Silkscreen } from 'next/font/google';
 import './globals.css';
 
-const nunito = Nunito({
-  variable: '--font-nunito',
+const inter = Inter({
+  variable: '--font-inter',
   subsets: ['latin'],
   display: 'swap',
 });
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" style={{ background: '#fff4fb' }}>
-      <body className={`${nunito.variable} ${silkscreen.variable}`}>{children}</body>
+      <body className={`${inter.variable} ${silkscreen.variable}`}>{children}</body>
     </html>
   );
 }

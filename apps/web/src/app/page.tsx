@@ -1,15 +1,10 @@
 'use client';
 
-import { FormEvent, useEffect, useMemo, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import {
-  buildLanes,
   currentSprites,
-  osCompanionCards,
   plannedSprites,
   roleOptions,
-  stackRows,
-  tickerItems,
-  web3Signals,
   type RoleOption,
 } from '../content/site';
 
@@ -53,8 +48,6 @@ export default function HomePage() {
     setSubmitted(entries.some((entry) => entry.email.toLowerCase() === email.toLowerCase()));
   }, [email]);
 
-  const progressValue = useMemo(() => Math.min(96, 36 + savedCount * 7), [savedCount]);
-
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
@@ -79,172 +72,99 @@ export default function HomePage() {
     setSubmitted(true);
   }
 
-  return (
-    <main className="waitlist-page">
-      <div className="waitlist-grid" aria-hidden="true" />
-      <div className="sky-glow sky-glow--one" aria-hidden="true" />
-      <div className="sky-glow sky-glow--two" aria-hidden="true" />
-      <div className="ambient-sprite ambient-sprite--one" aria-hidden="true">
-        <img src="/nqita-sprites/current/chibi-cyborg.gif" alt="" />
-      </div>
-      <div className="ambient-sprite ambient-sprite--two" aria-hidden="true">
-        <img src="/nqita-sprites/current/simple-cyborg.gif" alt="" />
-      </div>
-      <div className="ambient-sprite ambient-sprite--three" aria-hidden="true">
-        <img src="/nqita-sprites/current/cube-core.gif" alt="" />
-      </div>
+  const spriteCandidates = [...currentSprites, ...plannedSprites];
 
-      <header className="topbar shell">
-        <a className="wordmark" href="#waitlist-form">
-          <span className="wordmark__kicker">alpha waitlist</span>
-          <span className="wordmark__title">nqita</span>
+  return (
+    <main className="simple-home">
+      <header className="simple-shell simple-topbar">
+        <a className="simple-wordmark" href="#waitlist-form">
+          <span className="simple-wordmark__eyebrow">alpha waitlist</span>
+          <span className="simple-wordmark__title">nqita</span>
         </a>
 
-        <nav className="topbar__nav" aria-label="Primary">
+        <nav className="simple-nav" aria-label="Primary">
           <a href="#waitlist-form">waitlist</a>
           <a href="#current-shells">sprites</a>
-          <a href="#web3-scope">scope</a>
           <a href="https://github.com/ws-nqita" target="_blank" rel="noreferrer">
             github
           </a>
         </nav>
       </header>
 
-      <section className="ticker-shell shell" aria-label="Live status ribbon">
-        <div className="ticker">
-          <div className="ticker__track">
-            {[...tickerItems, ...tickerItems].map((item, index) => (
-              <span key={`${item}-${index}`}>{item}</span>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="hero shell">
-        <div className="hero__copy">
-          <p className="pixel-pill">pink terminal agent for web3-native operators</p>
-          <h1>
-            a persistent agent
-            <br />
-            for terminal, wallet,
-            <br />
-            browser, and desktop.
-          </h1>
-          <p className="hero__pronunciation">pronounced nick-ee-tah</p>
-          <p className="hero__lede">
-            Nqita starts in your terminal and grows into a visible operator companion across your
-            tools. The long arc is not another dashboard. It is an embodied pink agent that can sit
-            beside your workflows across chains, contracts, wallets, tabs, and the operating system.
+      <section className="simple-shell simple-hero">
+        <div className="simple-hero__copy">
+          <p className="simple-pill">terminal-first ai companion</p>
+          <h1>nqita starts in your terminal and grows into a persistent desktop companion.</h1>
+          <p className="simple-pronunciation">pronounced nick-ee-tah</p>
+          <p className="simple-lede">
+            A light, cute waitlist for a pink AI companion. No locked logo yet. The character,
+            behavior, and sprite body are still being figured out.
           </p>
 
-          <div className="pixel-meter">
-            <div className="pixel-meter__label">
-              <span>embodiment progress</span>
-              <strong>{progressValue}% awake</strong>
-            </div>
-            <div className="pixel-meter__bar" aria-hidden="true">
-              <span style={{ width: `${progressValue}%` }} />
-            </div>
-          </div>
-
-          <div className="hero__actions">
-            <a className="pixel-button pixel-button--primary" href="#waitlist-form">
-              join the waitlist
+          <div className="simple-actions">
+            <a className="simple-button simple-button--primary" href="#waitlist-form">
+              join waitlist
             </a>
-            <a className="pixel-button pixel-button--secondary" href="#current-shells">
-              inspect candidate shells
+            <a className="simple-button simple-button--secondary" href="#current-shells">
+              view sprite candidates
             </a>
           </div>
 
-          <div className="signal-row">
-            {web3Signals.map((item) => (
-              <div key={item.label} className="signal-tile">
-                <strong>{item.label}</strong>
-                <p>{item.detail}</p>
-              </div>
-            ))}
+          <div className="simple-stats">
+            <div className="simple-stat">
+              <span>saved locally</span>
+              <strong>{savedCount.toString().padStart(2, '0')}</strong>
+            </div>
+            <div className="simple-stat">
+              <span>current focus</span>
+              <strong>waitlist + sprite direction</strong>
+            </div>
           </div>
         </div>
 
-        <div className="hero__scene" aria-label="Nqita environment scene">
-          <div className="scene-card scene-card--server-room">
-            <div className="scene-card__header">
-              <span>network room</span>
-              <strong>web3 operator environment</strong>
-            </div>
-
-            <div className="scene-card__room scene-card__room--server">
-              <img
-                className="scene-card__backdrop"
-                src="/nqita-sprites/server-room.png"
-                alt="Pink pixel-art server room environment"
-              />
-              <div className="scene-card__scanlines" aria-hidden="true" />
-              <div className="scene-card__beams" aria-hidden="true">
-                <span />
-                <span />
-                <span />
-              </div>
-              <div className="scene-card__status-orbs" aria-hidden="true">
-                <span />
-                <span />
-                <span />
-              </div>
-              <img
-                className="scene-card__sprite scene-card__sprite--hero"
-                src="/nqita-sprites/hero-agent-transparent.png"
-                alt="Current Nqita sprite candidate render"
-              />
-              <div className="scene-card__sprite-ghost scene-card__sprite-ghost--one" aria-hidden="true">
-                <img src="/nqita-sprites/current/chibi-cyborg.gif" alt="" />
-              </div>
-              <div className="scene-card__sprite-ghost scene-card__sprite-ghost--two" aria-hidden="true">
-                <img src="/nqita-sprites/current/simple-cyborg.gif" alt="" />
-              </div>
-              <div className="scene-card__note scene-card__note--left">
-                candidate shell operating from the pink network corridor
-              </div>
-              <div className="scene-card__note scene-card__note--right">
-                no final logo. identity emerges through body, motion, and scene
-              </div>
-            </div>
+        <div className="simple-hero__art">
+          <div className="hero-preview">
+            <div className="hero-preview__label">current candidate</div>
+            <img
+              className="hero-preview__sprite"
+              src="/nqita-sprites/hero-agent-transparent.png"
+              alt="Potential Nqita sprite candidate"
+            />
+            <p className="hero-preview__note">
+              soft pink body, pixel silhouette, no final brand mark yet.
+            </p>
           </div>
         </div>
       </section>
 
-      <section className="shell content-grid">
-        <article className="panel panel--waitlist" id="waitlist-form">
-          <div className="panel__eyebrow">join the list</div>
-          <h2>Get the early builds while the site, shell, and operator flow are still hardening.</h2>
+      <section className="simple-shell simple-grid">
+        <article className="simple-card" id="waitlist-form">
+          <div className="simple-card__eyebrow">waitlist</div>
+          <h2>Get early access while the runtime and sprite identity are still taking shape.</h2>
           <p>
-            The current flow is intentionally simple. Sign up, get on the list, and get updates as
-            Nqita becomes more real across the CLI, desktop embodiment, and future wallet-aware
-            workflows.
+            Join the list for build drops, site updates, CLI progress, and sprite tests.
           </p>
 
           {submitted ? (
-            <div className="success-box" role="status" aria-live="polite">
-              <strong>slot reserved.</strong>
-              <p>
-                Your signup is saved locally on this device for now. The shared waitlist backend can
-                drop in later without changing the experience.
-              </p>
+            <div className="simple-success" role="status" aria-live="polite">
+              <strong>you&apos;re on the list.</strong>
+              <p>This signup is currently saved locally on this device.</p>
             </div>
           ) : (
-            <form className="waitlist-form" onSubmit={handleSubmit}>
+            <form className="simple-form" onSubmit={handleSubmit}>
               <label>
                 email
                 <input
                   type="email"
                   required
-                  placeholder="you@onchainoperator.xyz"
+                  placeholder="you@example.com"
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
                 />
               </label>
 
               <label>
-                you are
+                role
                 <select value={role} onChange={(event) => setRole(event.target.value as RoleOption)}>
                   {roleOptions.map((option) => (
                     <option key={option} value={option}>
@@ -254,108 +174,50 @@ export default function HomePage() {
                 </select>
               </label>
 
-              <label className="checkbox-row">
+              <label className="simple-checkbox">
                 <input
                   type="checkbox"
                   checked={wantsUpdates}
                   onChange={(event) => setWantsUpdates(event.target.checked)}
                 />
-                <span>send me build drops, sprite tests, protocol-adjacent updates, and launch notes</span>
+                <span>send updates about builds and sprite direction</span>
               </label>
 
-              <button className="pixel-button pixel-button--primary" type="submit">
-                reserve my slot
+              <button className="simple-button simple-button--primary" type="submit">
+                join waitlist
               </button>
             </form>
           )}
         </article>
 
-        <article className="panel panel--presence" id="web3-scope">
-          <div className="panel__eyebrow">web3 scope</div>
-          <h2>terminal-native, account-aware, and eventually protocol-literate.</h2>
-          <ul className="presence-list">
-            {stackRows.map((step) => (
-              <li key={step}>{step}</li>
-            ))}
+        <article className="simple-card simple-card--soft">
+          <div className="simple-card__eyebrow">what nqita is</div>
+          <h2>Simple now. More embodied later.</h2>
+          <ul className="simple-list">
+            <li>Starts in the terminal.</li>
+            <li>Moves toward a daemon-backed desktop companion.</li>
+            <li>Light by default, local-first, and character-led.</li>
           </ul>
-          <div className="tiny-stat">
-            <span>saved local signups</span>
-            <strong>{savedCount.toString().padStart(2, '0')}</strong>
-          </div>
         </article>
       </section>
 
-      <section className="shell market-strip">
-        <article className="market-card">
-          <span>phase one</span>
-          <strong>terminal runtime</strong>
-          <p>Chat, state, daemon loop, and visible sprite coherence.</p>
-        </article>
-        <article className="market-card">
-          <span>phase two</span>
-          <strong>desktop presence</strong>
-          <p>Persistent overlay body, bubbles, reactions, and scene changes.</p>
-        </article>
-        <article className="market-card">
-          <span>phase three</span>
-          <strong>web3 operator layer</strong>
-          <p>Wallet-adjacent workflows, protocol context, and account-linked assistance.</p>
-        </article>
-      </section>
-
-      <section className="shell gallery-section" id="what-it-is">
+      <section className="simple-shell simple-sprites" id="current-shells">
         <div className="section-heading">
-          <div className="panel__eyebrow">os-level companion</div>
-          <h2>not a prompt box. a local runtime that already lives with you.</h2>
+          <div className="panel__eyebrow">sprite candidates</div>
+          <h2>Potential bodies for Nqita.</h2>
           <p>
-            The site now carries the canonical framing for Nqita: terminal-first, daemon-backed,
-            permissioned, and privacy-first. That gives the visual work a real product spine instead
-            of leaving it as pure moodboarding.
+            These are the main directions under consideration right now. The site should help make
+            that choice feel obvious.
           </p>
         </div>
 
-        <div className="signal-row signal-row--companion">
-          {osCompanionCards.map((item) => (
-            <article key={item.title} className="signal-tile signal-tile--wide">
-              <strong>{item.title}</strong>
-              <p>{item.detail}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="shell sensation-strip" aria-label="Nqita sensory feed">
-        <article className="sensation-card">
-          <span>presence</span>
-          <strong>animated room, living shell, visible agent state</strong>
-        </article>
-        <article className="sensation-card">
-          <span>motion</span>
-          <strong>floating echoes, drift, pulse, scanlines, and sprite rhythm</strong>
-        </article>
-        <article className="sensation-card">
-          <span>tone</span>
-          <strong>pink control room energy instead of a generic saas landing page</strong>
-        </article>
-      </section>
-
-      <section className="shell gallery-section" id="current-shells">
-        <div className="section-heading">
-          <div className="panel__eyebrow">current nqitas</div>
-          <h2>candidate bodies we can ship and test with right now.</h2>
-          <p>
-            These are the live character directions currently available for testing motion, presence,
-            readability, and long-session desktop feel.
-          </p>
-        </div>
-
-        <div className="sprite-grid">
-          {currentSprites.map((sprite) => (
-            <article key={sprite.title} className="sprite-card">
-              <div className="sprite-card__media">
+        <div className="simple-sprite-grid">
+          {spriteCandidates.map((sprite) => (
+            <article key={`${sprite.status}-${sprite.title}`} className="simple-sprite-card">
+              <div className="simple-sprite-card__media">
                 <img src={sprite.src} alt={sprite.title} />
               </div>
-              <div className="sprite-card__body">
+              <div className="simple-sprite-card__body">
                 <span>{sprite.status}</span>
                 <strong>{sprite.title}</strong>
                 <p>{sprite.note}</p>
@@ -365,84 +227,11 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="shell gallery-section">
-        <div className="section-heading">
-          <div className="panel__eyebrow">planned directions</div>
-          <h2>forms we are actively pushing toward next.</h2>
-          <p>
-            Identity is still moving. These planned bodies are where the project can become stranger,
-            stronger, and more clearly agentic.
-          </p>
-        </div>
-
-        <div className="sprite-grid sprite-grid--planned">
-          {plannedSprites.map((sprite) => (
-            <article key={sprite.title} className="sprite-card sprite-card--planned">
-              <div className="sprite-card__media sprite-card__media--planned">
-                <img src={sprite.src} alt={sprite.title} />
-              </div>
-              <div className="sprite-card__body">
-                <span>{sprite.status}</span>
-                <strong>{sprite.title}</strong>
-                <p>{sprite.note}</p>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="shell lower-grid">
-        <article className="panel panel--code">
-          <div className="panel__eyebrow">runtime path</div>
-          <h2>simple entry. serious destination.</h2>
-          <pre>{`nqita chat
-  -> local daemon
-  -> sprite state + memory
-  -> byok or hosted path
-  -> browser + desktop presence
-  -> wallet / protocol-aware workflows later`}</pre>
-        </article>
-
-        <article className="panel panel--soft">
-          <div className="panel__eyebrow">identity rule</div>
-          <h2>the character is the brand right now.</h2>
-          <p>
-            No locked logo, no fake final mark. The site should feel like a living pink control room
-            for an agent that is still being discovered through sprite work, behavior, and scene.
-          </p>
-        </article>
-      </section>
-
-      <section className="shell gallery-section" id="build-lanes">
-        <div className="section-heading">
-          <div className="panel__eyebrow">build lanes</div>
-          <h2>the site can move fast now because the work is split cleanly.</h2>
-          <p>
-            Artists, runtime developers, and plugin builders each have a clear lane. That makes the
-            homepage a working project surface, not just a holding page.
-          </p>
-        </div>
-
-        <div className="sprite-grid sprite-grid--lanes">
-          {buildLanes.map((lane) => (
-            <article key={lane.title} className="sprite-card sprite-card--lane">
-              <div className="sprite-card__body">
-                <span>open contribution lane</span>
-                <strong>{lane.title}</strong>
-                <p>{lane.detail}</p>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <footer className="footer shell">
+      <footer className="simple-shell simple-footer">
         <span>nqita.wokspec.org</span>
-        <div className="footer__links">
+        <div className="simple-nav">
           <a href="#waitlist-form">waitlist</a>
           <a href="#current-shells">sprites</a>
-          <a href="#what-it-is">runtime</a>
-          <a href="#build-lanes">lanes</a>
           <a href="https://github.com/ws-nqita" target="_blank" rel="noreferrer">
             ws-nqita
           </a>
