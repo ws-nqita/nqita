@@ -10,6 +10,26 @@ const pixelFont = Press_Start_2P({
   display: 'swap',
 });
 
+const wordmarkLetters = [
+  { value: 'N', className: '' },
+  { value: 'q', className: '' },
+  { value: 'i', className: '' },
+  { value: 't', className: 'hero-home__letter--t' },
+  { value: 'a', className: '' },
+];
+
+function WordmarkLayer({ className }: { className: string }) {
+  return (
+    <span className={className} aria-hidden="true">
+      {wordmarkLetters.map((letter, index) => (
+        <span key={`${className}-${index}`} className={`hero-home__letter ${letter.className}`.trim()}>
+          {letter.value}
+        </span>
+      ))}
+    </span>
+  );
+}
+
 function GitHubIcon() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -96,13 +116,15 @@ export default function HomePage() {
           <div className="hero-home__platform hero-home__platform--back" aria-hidden="true" />
           <div className="hero-home__platform hero-home__platform--mid" aria-hidden="true" />
           <div className={`hero-home__title-wrap ${pixelFont.className}`}>
-            <span className="hero-home__title-shadow" aria-hidden="true">
-              Nqita
-            </span>
-            <span className="hero-home__title-bevel" aria-hidden="true">
-              Nqita
-            </span>
-            <h1 className="hero-home__title">Nqita</h1>
+            <WordmarkLayer className="hero-home__title-shadow" />
+            <WordmarkLayer className="hero-home__title-bevel" />
+            <h1 className="hero-home__title" aria-label="Nqita">
+              {wordmarkLetters.map((letter, index) => (
+                <span key={`title-${index}`} className={`hero-home__letter ${letter.className}`.trim()}>
+                  {letter.value}
+                </span>
+              ))}
+            </h1>
           </div>
           <div className="hero-home__actions">
             <div className="hero-home__action-well">
