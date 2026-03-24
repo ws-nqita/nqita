@@ -95,6 +95,7 @@ export default function HomePage() {
             </span>
             <h1 className="hero-home__title">Nqita</h1>
           </div>
+          <p className="hero-home__meta">Nqita CLI</p>
           <div className="hero-home__actions">
             <a className="hero-home__icon-button" href="https://github.com/ws-nqita" target="_blank" rel="noreferrer" aria-label="GitHub">
               <GitHubIcon />
@@ -108,14 +109,16 @@ export default function HomePage() {
             >
               <DiscordIcon />
             </a>
+            <a className="hero-home__text-button" href="https://wokspec.org/support" target="_blank" rel="noreferrer">
+              Submit
+            </a>
           </div>
         </div>
       </section>
 
       <section className="home-shell home-section" id="sprites">
         <h2 className="sprite-showcase-title">
-          <span className={pixelFont.className}>Nqita</span>
-          <span>sprite candidate showcase</span>
+          <span>sprite candidates</span>
         </h2>
 
         <div className="sprite-module sprite-module--single">
