@@ -10,7 +10,7 @@ const inter = Inter({
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#ff82bf',
+  themeColor: '#f6dce7',
 };
 
 export const metadata: Metadata = {
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" style={{ background: '#fff4fb' }}>
+    <html lang="en" style={{ background: '#fff6f9' }}>
       <body className={inter.className}>{children}</body>
     </html>
   );

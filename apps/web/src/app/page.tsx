@@ -2,15 +2,13 @@
 
 import { useEffect, useState } from 'react';
 import { Press_Start_2P } from 'next/font/google';
-import { spriteOptions } from '../content/site';
+import { buildPlan, homepageFacts, spriteOptions } from '../content/site';
 
 const pixelFont = Press_Start_2P({
   weight: '400',
   subsets: ['latin'],
   display: 'swap',
 });
-
-const backgroundCells = Array.from({ length: 36 }, (_, index) => index);
 
 function GitHubIcon() {
   return (
@@ -52,12 +50,12 @@ export default function HomePage() {
       const xRatio = event.clientX / window.innerWidth - 0.5;
       const yRatio = event.clientY / window.innerHeight - 0.5;
 
-      root.style.setProperty('--cursor-x', `${event.clientX}px`);
-      root.style.setProperty('--cursor-y', `${event.clientY}px`);
       root.style.setProperty('--tilt-x', `${(-yRatio * 8).toFixed(2)}deg`);
-      root.style.setProperty('--tilt-y', `${(xRatio * 8).toFixed(2)}deg`);
-      root.style.setProperty('--scene-shift-x', `${(xRatio * 10).toFixed(2)}px`);
-      root.style.setProperty('--scene-shift-y', `${(yRatio * 8).toFixed(2)}px`);
+      root.style.setProperty('--tilt-y', `${(xRatio * 10).toFixed(2)}deg`);
+      root.style.setProperty('--scene-shift-x', `${(xRatio * 18).toFixed(2)}px`);
+      root.style.setProperty('--scene-shift-y', `${(yRatio * 14).toFixed(2)}px`);
+      root.style.setProperty('--title-depth-x', `${(xRatio * 12).toFixed(2)}px`);
+      root.style.setProperty('--title-depth-y', `${(yRatio * 10).toFixed(2)}px`);
     };
 
     window.addEventListener('mousemove', handleMove, { passive: true });
@@ -88,62 +86,73 @@ export default function HomePage() {
   }
 
   return (
-    <main className={`site-page home-page ${pixelFont.className}`}>
-      <div className="home-grid-glow" aria-hidden="true">
-        {backgroundCells.map((cell) => (
-          <span key={cell} className={`home-grid-glow__cell home-grid-glow__cell--${cell % 6}`} />
-        ))}
-      </div>
-
+    <main className="site-page home-page">
       <section className="home-shell hero-home">
-        <div className="saas-stage" aria-hidden="true">
-          <div className="saas-stage__back" />
-          <div className="saas-stage__platform" />
-          <div className="saas-stage__deck" />
-          <div className="saas-stage__column saas-stage__column--left" />
-          <div className="saas-stage__column saas-stage__column--right" />
-          <div className="saas-stage__cube saas-stage__cube--left" />
-          <div className="saas-stage__cube saas-stage__cube--center" />
-          <div className="saas-stage__cube saas-stage__cube--right" />
-        </div>
-
-        <div className="hero-home__content">
-          <h1 className="hero-home__title">Nqita</h1>
-          <div className="hero-home__actions">
-            <a href="https://github.com/ws-nqita" target="_blank" rel="noreferrer" aria-label="GitHub">
-              <GitHubIcon />
-            </a>
-            <a href="https://discord.gg/juunCaGpTW" target="_blank" rel="noreferrer" aria-label="Discord">
-              <DiscordIcon />
-            </a>
+        <div className="hero-home__frame">
+          <div className="hero-home__copy">
+            <p className="hero-home__eyebrow">WokSpec desktop companion</p>
+            <div className={`hero-home__title-wrap ${pixelFont.className}`}>
+              <span className="hero-home__title-shadow" aria-hidden="true">
+                Nqita
+              </span>
+              <h1 className="hero-home__title">Nqita</h1>
+            </div>
+            <p className="hero-home__lede">
+              Open source desktop presence with pixel-art identity, local-first runtime, and a softer premium interface.
+            </p>
+            <div className="hero-home__actions">
+              <a className="hero-home__icon-button" href="https://github.com/ws-nqita" target="_blank" rel="noreferrer" aria-label="GitHub">
+                <GitHubIcon />
+              </a>
+              <a
+                className="hero-home__icon-button hero-home__icon-button--discord"
+                href="https://discord.gg/juunCaGpTW"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Discord"
+              >
+                <DiscordIcon />
+              </a>
+            </div>
           </div>
-          <a className="hero-home__jump" href="#sprites" aria-label="Scroll to sprite collection">
-            <span />
-            <span />
-            <span />
-          </a>
+
+          <div className="hero-home__summary">
+            {homepageFacts.map((fact) => (
+              <p key={fact}>{fact}</p>
+            ))}
+          </div>
         </div>
       </section>
 
       <section className="home-shell home-section" id="sprites">
+        <div className="section-heading">
+          <p className="section-heading__eyebrow">Showcase depth only</p>
+          <h2>Sprite selection and motion language</h2>
+        </div>
+
         <div className="sprite-module">
-          <div className="sprite-module__title">SPRITE COLLECTION</div>
+          <div className="sprite-module__sidebar">
+            <p className="sprite-module__label">Current candidate</p>
+            <div className={`sprite-module__name ${pixelFont.className}`}>Nqita</div>
+            <p className="sprite-module__detail">
+              The carousel stays dimensional, but the rest of the system is intentionally flat so the character art carries the energy.
+            </p>
+            <div className="sprite-module__controls">
+              <button type="button" onClick={() => go(-1)}>
+                Previous
+              </button>
+              <button type="button" onClick={() => go(1)}>
+                Next
+              </button>
+            </div>
+          </div>
+
           <div className="sprite-viewer">
             <div className="sprite-viewer__panel">
               <div className="sprite-viewer__scene" aria-hidden="true">
                 <span className="sprite-viewer__wall" />
                 <span className="sprite-viewer__floor" />
                 <span className="sprite-viewer__pedestal" />
-                <span className="sprite-viewer__pedestal-top" />
-                <span className="sprite-viewer__beam" />
-                <span className="sprite-viewer__dock sprite-viewer__dock--left" />
-                <span className="sprite-viewer__dock sprite-viewer__dock--right" />
-                <span className="sprite-viewer__rail sprite-viewer__rail--top" />
-                <span className="sprite-viewer__rail sprite-viewer__rail--bottom" />
-                <span className="sprite-viewer__mini sprite-viewer__mini--left-top" />
-                <span className="sprite-viewer__mini sprite-viewer__mini--left-bottom" />
-                <span className="sprite-viewer__mini sprite-viewer__mini--right-top" />
-                <span className="sprite-viewer__mini sprite-viewer__mini--right-bottom" />
               </div>
 
               <button
@@ -151,24 +160,14 @@ export default function HomePage() {
                 type="button"
                 onClick={() => go(-1)}
                 aria-label="Previous sprite"
-              >
-                <span className="sprite-viewer__hover-label">
-                  <i />
-                  previous
-                </span>
-              </button>
+              />
 
               <button
                 className="sprite-viewer__hover sprite-viewer__hover--right"
                 type="button"
                 onClick={() => go(1)}
                 aria-label="Next sprite"
-              >
-                <span className="sprite-viewer__hover-label">
-                  <i />
-                  next
-                </span>
-              </button>
+              />
 
               <img className="sprite-viewer__sprite sprite-viewer__sprite--ghost-left" src={previousSprite.src} alt="" aria-hidden="true" />
               <img className="sprite-viewer__sprite" src={activeSprite.src} alt={activeSprite.alt} />
@@ -178,12 +177,29 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="home-shell home-section home-section--info">
+      <section className="home-shell home-section home-section--split">
+        <div className="section-heading">
+          <p className="section-heading__eyebrow">What matters</p>
+          <h2>Calm, legible, premium, open.</h2>
+        </div>
+
+        <div className="plan-grid">
+          {buildPlan.map((item) => (
+            <article key={item} className="plan-card">
+              <span className="plan-card__index" aria-hidden="true" />
+              <p>{item}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="home-shell home-section">
         <div className="help-module">
-          <p>WE NEED HELP!</p>
-          <p>DEVELOPERS AND ARTISTS.</p>
-          <p>ANYONE.</p>
-          <p>OPEN SOURCE.</p>
+          <p className="help-module__eyebrow">Open source and still early</p>
+          <h2>Need developers, artists, and people who care about feel.</h2>
+          <p className="help-module__copy">
+            The site should look intentional. The product should feel calm. If you can help with either, the GitHub org and Discord are the entry points.
+          </p>
         </div>
       </section>
     </main>
