@@ -289,6 +289,15 @@ img {
   font-size: clamp(2.2rem, 4.8vw, 4.35rem);
 }
 
+.hero__pronunciation {
+  margin: 0.75rem 0 0;
+  font-family: var(--font-heading);
+  font-size: 0.74rem;
+  text-transform: lowercase;
+  color: var(--accent-deep);
+  letter-spacing: 0.06em;
+}
+
 .hero__lede,
 .panel p,
 .section-heading p,
@@ -362,6 +371,10 @@ img {
   gap: 0.9rem;
 }
 
+.signal-row--companion {
+  margin-top: 0.35rem;
+}
+
 .signal-tile,
 .panel,
 .sprite-card,
@@ -375,6 +388,10 @@ img {
 .signal-tile {
   padding: 1rem;
   transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.signal-tile--wide {
+  min-height: 100%;
 }
 
 .signal-tile strong,
@@ -858,9 +875,21 @@ img {
   gap: 1rem;
 }
 
+.sprite-grid--lanes {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .sprite-card {
   overflow: hidden;
   transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.sprite-card--lane {
+  display: flex;
+  align-items: stretch;
+  background:
+    linear-gradient(180deg, rgba(255, 249, 253, 0.96), rgba(255, 229, 241, 0.93)),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.32), rgba(255, 111, 180, 0.08));
 }
 
 .sprite-card__media {
@@ -1046,7 +1075,8 @@ img {
     grid-template-columns: 1fr;
   }
 
-  .signal-row {
+  .signal-row,
+  .sprite-grid--lanes {
     grid-template-columns: 1fr;
   }
 

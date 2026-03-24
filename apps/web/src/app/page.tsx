@@ -1,16 +1,17 @@
 'use client';
 
 import { FormEvent, useEffect, useMemo, useState } from 'react';
-
-type RoleOption =
-  | 'Terminal User'
-  | 'Developer'
-  | 'Founder'
-  | 'Pixel Artist'
-  | 'Designer'
-  | 'Web3 Operator'
-  | 'Protocol Builder'
-  | 'Curious Human';
+import {
+  buildLanes,
+  currentSprites,
+  osCompanionCards,
+  plannedSprites,
+  roleOptions,
+  stackRows,
+  tickerItems,
+  web3Signals,
+  type RoleOption,
+} from '../content/site';
 
 type WaitlistEntry = {
   email: string;
@@ -19,113 +20,7 @@ type WaitlistEntry = {
   createdAt: string;
 };
 
-type SpriteCard = {
-  title: string;
-  src: string;
-  note: string;
-  status: string;
-};
-
-const roleOptions: RoleOption[] = [
-  'Terminal User',
-  'Developer',
-  'Founder',
-  'Pixel Artist',
-  'Designer',
-  'Web3 Operator',
-  'Protocol Builder',
-  'Curious Human',
-];
-
 const storageKey = 'nqita-waitlist-v1';
-
-const currentSprites: SpriteCard[] = [
-  {
-    title: 'chibi cyborg',
-    src: '/nqita-sprites/current/chibi-cyborg.gif',
-    status: 'current shell',
-    note: 'Closest to an everyday desktop companion that still feels technically sharp.',
-  },
-  {
-    title: 'simple pink runner',
-    src: '/nqita-sprites/current/simple-cyborg.gif',
-    status: 'current shell',
-    note: 'Small, readable, and ideal for persistent overlay behavior on dense screens.',
-  },
-  {
-    title: 'cube core',
-    src: '/nqita-sprites/current/cube-core.gif',
-    status: 'current shell',
-    note: 'Abstract daemon energy. Good for utility mode or network-state presence.',
-  },
-  {
-    title: 'armored girl',
-    src: '/nqita-sprites/current/armored-girl.gif',
-    status: 'current shell',
-    note: 'Heavier silhouette for a stronger operator persona and more overt identity.',
-  },
-];
-
-const plannedSprites: SpriteCard[] = [
-  {
-    title: 'full walk-cycle shell',
-    src: '/nqita-sprites/planned/walk-cycle-south.png',
-    status: 'planned body',
-    note: 'Best route for wandering desktop motion, idles, and room-to-room embodiment.',
-  },
-  {
-    title: 'computer-head form',
-    src: '/nqita-sprites/planned/computer-head-south.png',
-    status: 'planned body',
-    note: 'Feels stranger and more post-human. Strong fit if identity leans deeper into agenthood.',
-  },
-  {
-    title: 'monitor-body form',
-    src: '/nqita-sprites/planned/monitor-body-south.png',
-    status: 'planned body',
-    note: 'Tighter link to terminal, dashboards, ledgers, and workstation-native presence.',
-  },
-  {
-    title: 'soft chibi front',
-    src: '/nqita-sprites/planned/chibi-south.png',
-    status: 'planned body',
-    note: 'The safest readable fallback if we need friendlier public-facing surfaces.',
-  },
-];
-
-const web3Signals = [
-  {
-    label: 'wallet-adjacent operator',
-    detail: 'Built for people living between terminal tabs, dashboards, wallets, contracts, and Discord war rooms.',
-  },
-  {
-    label: 'byok and hosted path',
-    detail: 'Bring your own key for serious usage, or use the hosted path with limits while Nqita hardens.',
-  },
-  {
-    label: 'persistent identity',
-    detail: 'Not just another chat tab. The agent should stay present across surfaces and context boundaries.',
-  },
-];
-
-const stackRows = [
-  'terminal command surface',
-  'local daemon memory + state',
-  'wallet / account-aware workflows later',
-  'browser + desktop embodiment',
-  'protocol and operator tooling over time',
-];
-
-const tickerItems = [
-  'daemon awake',
-  'sprite candidates live',
-  'pink network room online',
-  'wallet-aware workflows planned',
-  'desktop shell under construction',
-  'byok path supported',
-  'hosted path with limits',
-  'identity still evolving',
-];
 
 function readStoredEntries(): WaitlistEntry[] {
   if (typeof window === 'undefined') {
@@ -235,6 +130,7 @@ export default function HomePage() {
             <br />
             browser, and desktop.
           </h1>
+          <p className="hero__pronunciation">pronounced nick-ee-tah</p>
           <p className="hero__lede">
             Nqita starts in your terminal and grows into a visible operator companion across your
             tools. The long arc is not another dashboard. It is an embodied pink agent that can sit
@@ -407,6 +303,27 @@ export default function HomePage() {
         </article>
       </section>
 
+      <section className="shell gallery-section" id="what-it-is">
+        <div className="section-heading">
+          <div className="panel__eyebrow">os-level companion</div>
+          <h2>not a prompt box. a local runtime that already lives with you.</h2>
+          <p>
+            The site now carries the canonical framing for Nqita: terminal-first, daemon-backed,
+            permissioned, and privacy-first. That gives the visual work a real product spine instead
+            of leaving it as pure moodboarding.
+          </p>
+        </div>
+
+        <div className="signal-row signal-row--companion">
+          {osCompanionCards.map((item) => (
+            <article key={item.title} className="signal-tile signal-tile--wide">
+              <strong>{item.title}</strong>
+              <p>{item.detail}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
       <section className="shell sensation-strip" aria-label="Nqita sensory feed">
         <article className="sensation-card">
           <span>presence</span>
@@ -496,12 +413,36 @@ export default function HomePage() {
         </article>
       </section>
 
+      <section className="shell gallery-section" id="build-lanes">
+        <div className="section-heading">
+          <div className="panel__eyebrow">build lanes</div>
+          <h2>the site can move fast now because the work is split cleanly.</h2>
+          <p>
+            Artists, runtime developers, and plugin builders each have a clear lane. That makes the
+            homepage a working project surface, not just a holding page.
+          </p>
+        </div>
+
+        <div className="sprite-grid sprite-grid--lanes">
+          {buildLanes.map((lane) => (
+            <article key={lane.title} className="sprite-card sprite-card--lane">
+              <div className="sprite-card__body">
+                <span>open contribution lane</span>
+                <strong>{lane.title}</strong>
+                <p>{lane.detail}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
       <footer className="footer shell">
         <span>nqita.wokspec.org</span>
         <div className="footer__links">
           <a href="#waitlist-form">waitlist</a>
           <a href="#current-shells">sprites</a>
-          <a href="#web3-scope">scope</a>
+          <a href="#what-it-is">runtime</a>
+          <a href="#build-lanes">lanes</a>
           <a href="https://github.com/ws-nqita" target="_blank" rel="noreferrer">
             ws-nqita
           </a>
