@@ -296,7 +296,7 @@ export default function HomePage() {
               </div>
               <img
                 className="scene-card__sprite scene-card__sprite--hero"
-                src="/nqita-sprites/hero-agent.png"
+                src="/nqita-sprites/hero-agent-transparent.png"
                 alt="Current Nqita sprite candidate render"
               />
               <div className="scene-card__sprite-ghost scene-card__sprite-ghost--one" aria-hidden="true">

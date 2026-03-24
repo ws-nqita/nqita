@@ -582,7 +582,9 @@ img {
   right: -1.5rem;
   bottom: -0.5rem;
   width: min(100%, 29rem);
-  filter: drop-shadow(16px 16px 0 rgba(69, 12, 41, 0.18));
+  filter:
+    drop-shadow(0 0 24px rgba(255, 187, 222, 0.42))
+    drop-shadow(16px 16px 0 rgba(69, 12, 41, 0.18));
   animation: hero-hover 5.5s ease-in-out infinite;
 }
 
