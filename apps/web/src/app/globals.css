@@ -214,42 +214,28 @@ svg {
 .hero-home {
   min-height: 100vh;
   display: grid;
-  align-items: center;
-  padding: 28px 0 40px;
+  place-items: center;
+  padding: 28px 0 20px;
 }
 
-.hero-home__frame {
+.hero-home__minimal {
   display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
-  gap: 28px;
-  align-items: end;
+  justify-items: center;
+  gap: 24px;
+  text-align: center;
 }
 
-.hero-home__copy,
-.hero-home__summary,
+.hero-home__minimal,
 .sprite-module,
-.plan-card,
-.help-module {
+.sprite-showcase-title {
   border: 1px solid var(--home-line);
   background: rgba(255, 250, 251, 0.8);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
 }
 
-.hero-home__copy {
-  padding: 28px;
-}
-
-.hero-home__eyebrow,
-.section-heading__eyebrow,
-.sprite-module__label,
-.help-module__eyebrow {
-  margin: 0;
-  color: var(--home-pink-deep);
-  font-size: 0.82rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+.hero-home__minimal {
+  padding: 36px 32px;
 }
 
 .hero-home__title-wrap {
@@ -290,18 +276,9 @@ svg {
   transform: translate3d(calc(var(--title-depth-x) * 0.45 + 6px), calc(var(--title-depth-y) * 0.45 + 6px), -1px);
 }
 
-.hero-home__lede {
-  max-width: 620px;
-  margin: 20px 0 0;
-  color: var(--home-soft);
-  font-size: clamp(1rem, 1.6vw, 1.15rem);
-  line-height: 1.72;
-}
-
 .hero-home__actions {
   display: flex;
   gap: 16px;
-  margin-top: 28px;
 }
 
 .hero-home__icon-button {
@@ -344,84 +321,25 @@ svg {
   height: 34px;
 }
 
-.hero-home__summary {
-  display: grid;
-  gap: 14px;
-  padding: 24px;
-  align-self: stretch;
-}
-
-.hero-home__summary p {
-  margin: 0;
-  padding: 16px 18px;
-  border: 1px solid var(--home-line);
-  background: var(--home-surface);
-  color: var(--home-soft);
-  line-height: 1.7;
-}
-
 .home-section {
-  padding-top: 36px;
-}
-
-.section-heading {
-  display: grid;
-  gap: 10px;
-  margin-bottom: 18px;
-}
-
-.section-heading h2,
-.help-module h2 {
-  margin: 0;
-  font-size: clamp(1.8rem, 4vw, 3.2rem);
-  line-height: 1.02;
-  letter-spacing: -0.05em;
+  padding-top: 0;
 }
 
 .sprite-module {
-  display: grid;
-  grid-template-columns: 320px minmax(0, 1fr);
-  gap: 22px;
   padding: 22px;
 }
 
-.sprite-module__sidebar {
-  display: grid;
-  align-content: start;
-  gap: 14px;
-}
-
-.sprite-module__name {
-  font-size: clamp(1.2rem, 2vw, 1.5rem);
-  line-height: 1.2;
-  color: var(--home-pink-deep);
-}
-
-.sprite-module__detail {
+.sprite-showcase-title {
   margin: 0;
-  color: var(--home-soft);
-  line-height: 1.72;
-}
-
-.sprite-module__controls {
   display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.sprite-module__controls button {
-  min-height: 44px;
-  padding: 0 16px;
-  border: 1px solid var(--home-line-strong);
-  background: var(--home-surface);
-  color: var(--home-ink);
-  cursor: pointer;
-  transition: transform 140ms ease, background-color 140ms ease;
-}
-
-.sprite-module__controls button:hover {
-  transform: translateY(-1px);
-  background: #fff;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 18px 22px;
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  font-weight: 500;
+  line-height: 1.4;
+  text-align: center;
 }
 
 .sprite-viewer__panel {
@@ -530,48 +448,6 @@ svg {
   right: 0;
 }
 
-.home-section--split {
-  padding-top: 44px;
-}
-
-.plan-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px;
-}
-
-.plan-card {
-  position: relative;
-  min-height: 180px;
-  padding: 26px;
-}
-
-.plan-card__index {
-  display: inline-block;
-  width: 18px;
-  height: 18px;
-  background: var(--home-pink);
-}
-
-.plan-card p {
-  margin: 22px 0 0;
-  max-width: 18ch;
-  color: var(--home-ink);
-  font-size: clamp(1.1rem, 2vw, 1.35rem);
-  line-height: 1.4;
-}
-
-.help-module {
-  padding: 28px;
-}
-
-.help-module__copy {
-  max-width: 720px;
-  margin: 16px 0 0;
-  color: var(--home-soft);
-  line-height: 1.72;
-}
-
 .docs-page {
   display: grid;
   place-items: center;
@@ -596,16 +472,6 @@ svg {
 }
 
 @media (max-width: 900px) {
-  .hero-home__frame,
-  .sprite-module,
-  .plan-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .hero-home__summary {
-    padding-top: 0;
-  }
-
   .sprite-viewer__panel {
     min-height: 540px;
   }
@@ -637,11 +503,8 @@ svg {
     padding-top: 12px;
   }
 
-  .hero-home__copy,
-  .hero-home__summary,
+  .hero-home__minimal,
   .sprite-module,
-  .plan-card,
-  .help-module,
   .public-card,
   .app-auth-card,
   .docs-simple {
