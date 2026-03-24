@@ -277,7 +277,7 @@ svg {
 
 .hero-home__minimal {
   min-width: min(100%, 720px);
-  padding: 54px 42px 34px;
+  padding: 44px 34px 26px;
   border-radius: 32px;
   transition: transform 220ms ease, box-shadow 220ms ease;
   box-shadow:
@@ -380,10 +380,10 @@ svg {
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 16px;
+  gap: 12px;
   width: 100%;
-  padding: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.56);
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.52);
   border-radius: 28px;
   background: rgba(255, 255, 255, 0.22);
   box-shadow:
@@ -392,9 +392,9 @@ svg {
 }
 
 .hero-home__action-well {
-  min-height: 98px;
-  padding: 8px;
-  border-radius: 24px;
+  min-height: 78px;
+  padding: 6px;
+  border-radius: 22px;
   border: 1px solid rgba(206, 162, 180, 0.28);
   background:
     linear-gradient(180deg, rgba(236, 205, 218, 0.7), rgba(255, 250, 252, 0.4)),
@@ -405,10 +405,10 @@ svg {
 }
 
 .hero-home__icon-button {
-  width: 82px;
-  height: 82px;
+  width: 64px;
+  height: 64px;
   border: 1px solid var(--glass-stroke);
-  border-radius: 28px;
+  border-radius: 22px;
   background: rgba(255, 255, 255, 0.45);
   color: var(--home-ink);
   display: inline-flex;
@@ -443,16 +443,16 @@ svg {
 }
 
 .hero-home__text-button {
-  min-height: 82px;
-  padding: 0 30px;
+  min-height: 64px;
+  padding: 0 22px;
   border: 1px solid var(--glass-stroke);
-  border-radius: 28px;
+  border-radius: 22px;
   background: rgba(255, 255, 255, 0.48);
   color: var(--home-ink);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.76rem;
+  font-size: 0.62rem;
   line-height: 1.6;
   font-weight: 400;
   letter-spacing: 0.02em;
@@ -499,8 +499,8 @@ svg {
 }
 
 .hero-home__actions svg {
-  width: 34px;
-  height: 34px;
+  width: 26px;
+  height: 26px;
 }
 
 .home-section {
@@ -510,7 +510,7 @@ svg {
 }
 
 .sprite-module {
-  padding: 22px;
+  padding: 18px;
   border-radius: 32px;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.92),
@@ -524,7 +524,7 @@ svg {
   align-items: center;
   justify-content: center;
   gap: 12px;
-  padding: 20px 24px;
+  padding: 16px 20px;
   border-radius: 32px;
   font-size: clamp(0.9rem, 1.6vw, 1rem);
   font-weight: 400;
@@ -535,8 +535,8 @@ svg {
 
 .sprite-feature {
   display: grid;
-  grid-template-columns: 92px minmax(0, 1fr) 92px;
-  gap: 18px;
+  grid-template-columns: 72px minmax(0, 1fr) 72px;
+  gap: 14px;
   align-items: center;
   margin-bottom: 18px;
 }
@@ -554,7 +554,7 @@ svg {
 }
 
 .sprite-card--featured {
-  padding: 14px;
+  padding: 10px;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.46), rgba(255, 255, 255, 0.26)),
     rgba(255, 255, 255, 0.28);
@@ -609,7 +609,7 @@ svg {
 
 .sprite-card__image--candidate {
   aspect-ratio: 1 / 1;
-  padding: 18px;
+  padding: 14px;
   filter: drop-shadow(0 14px 18px rgba(70, 41, 55, 0.14));
 }
 
@@ -650,7 +650,7 @@ svg {
   display: grid;
   justify-items: center;
   gap: 12px;
-  padding: 18px 18px 6px;
+  padding: 14px 14px 4px;
   text-align: center;
 }
 
@@ -662,9 +662,9 @@ svg {
 }
 
 .sprite-feature__nav {
-  min-height: 72px;
+  min-height: 60px;
   border: 1px solid var(--glass-stroke);
-  border-radius: 24px;
+  border-radius: 20px;
   background: rgba(255, 255, 255, 0.4);
   color: var(--home-ink);
   cursor: pointer;
@@ -753,7 +753,7 @@ svg {
   .public-card,
   .app-auth-card,
   .docs-simple {
-    padding: 20px;
+    padding: 18px;
   }
 
   .hero-home__platform--back {
@@ -767,29 +767,29 @@ svg {
 
   .hero-home__actions {
     justify-content: stretch;
-    gap: 12px;
-    padding: 10px;
+    gap: 10px;
+    padding: 8px;
   }
 
   .hero-home__action-well {
     width: 100%;
-    min-height: 88px;
+    min-height: 72px;
   }
 
   .hero-home__actions a {
     width: 100%;
-    height: 72px;
-    border-radius: 24px;
+    height: 60px;
+    border-radius: 20px;
   }
 
   .hero-home__actions svg {
-    width: 30px;
-    height: 30px;
+    width: 24px;
+    height: 24px;
   }
 
   .hero-home__text-button {
-    min-height: 72px;
-    padding: 0 24px;
+    min-height: 60px;
+    padding: 0 18px;
   }
 
   .sprite-card--featured {
