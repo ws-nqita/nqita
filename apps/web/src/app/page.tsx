@@ -1,19 +1,14 @@
 'use client';
 
-import Link from 'next/link';
 import { useEffect } from 'react';
 import { Press_Start_2P } from 'next/font/google';
-import { buildPlan, documentationLinks, homepageFacts, spriteOptions } from '../content/site';
+import { spriteOptions } from '../content/site';
 
 const pixelFont = Press_Start_2P({
   weight: '400',
   subsets: ['latin'],
   display: 'swap',
 });
-
-const uniqueSprites = spriteOptions.filter(
-  (sprite, index, allSprites) => allSprites.findIndex((entry) => entry.src === sprite.src) === index,
-);
 
 function GitHubIcon() {
   return (
@@ -58,164 +53,116 @@ export default function HomePage() {
   }, []);
 
   return (
-    <main className="site-page">
+    <main className="site-page site-page--single">
       <div className="site-grid" aria-hidden="true" />
+      <div className="ambient-orbs" aria-hidden="true">
+        <span className="ambient-orb ambient-orb--one" />
+        <span className="ambient-orb ambient-orb--two" />
+        <span className="ambient-orb ambient-orb--three" />
+        <span className="ambient-orb ambient-orb--four" />
+      </div>
 
-      <header className="site-shell site-topbar">
-        <Link className="site-brand" href="/">
-          <span>Nqita</span>
-          <small>open source desktop companion by WokSpec</small>
-        </Link>
-
-        <nav className="site-nav" aria-label="Primary">
-          <a href="#about">about</a>
-          <a href="#docs">docs</a>
-          <a href="#sprites">sprites</a>
-          <Link href="/contribute">contribute</Link>
-        </nav>
-      </header>
-
-      <section className="site-shell hero-flow">
-        <div className="hero-copy">
-          <p className="eyebrow">WokSpec is building Nqita in the open.</p>
-          <h1 className={`hero-title ${pixelFont.className}`}>Nqita</h1>
-          <p className="hero-lede">
-            Nqita is a pixel desktop companion meant to live on your computer, not inside a tab.
-            The live prototype today is the CLI stack. The bigger goal is a visible local runtime
-            with a sprite, memory, and a desktop presence that feels alive without getting in your
-            way.
-          </p>
-
-          <div className="hero-actions">
-            <a
-              className="action-button action-button--primary"
-              href="https://github.com/ws-nqita"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <GitHubIcon />
-              GitHub
-            </a>
-            <a
-              className="action-button action-button--secondary"
-              href="https://github.com/ws-nqita/nqita-cli"
-              target="_blank"
-              rel="noreferrer"
-            >
-              nqita-cli repo
-            </a>
-            <Link className="action-button action-button--ghost" href="/docs">
-              Read docs
-            </Link>
-          </div>
-
-          <p className="human-callout">
-            If you have real design, art direction, sprite animation, or pixel art experience,
-            please help our open source project by WokSpec. This part matters. Nqita will only feel
-            right if artists and designers help shape her.
-          </p>
+      <section className="site-shell hero-minimal">
+        <div className="hero-minimal__frame" aria-hidden="true">
+          <span />
+          <span />
+          <span />
+          <span />
         </div>
+        <h1 className={`hero-minimal__title ${pixelFont.className}`}>Nqita</h1>
 
-        <div className="hero-stage">
-          <div className="hero-stage__backdrop" />
-          <img
-            className="hero-stage__room"
-            src="/nqita-sprites/server-room.png"
-            alt=""
-          />
-          <img
-            className="hero-stage__sprite"
-            src="/nqita-sprites/current/chibi-cyborg.gif"
-            alt="Animated preview of Nqita on the desktop"
-          />
-
-          <div className="coming-soon-chip" aria-label="Discord bot coming soon">
+        <div className="hero-minimal__actions">
+          <a
+            className="action-button action-button--primary"
+            href="https://github.com/ws-nqita"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <GitHubIcon />
+            GitHub
+          </a>
+          <a
+            className="action-button action-button--secondary"
+            href="https://discord.gg/juunCaGpTW"
+            target="_blank"
+            rel="noreferrer"
+          >
             <DiscordIcon />
-            <span>Discord bot coming soon</span>
-          </div>
-        </div>
-      </section>
-
-      <section className="site-shell content-river" id="about">
-        <div className="section-heading">
-          <p className="eyebrow">What Nqita is becoming</p>
-          <h2>Clear idea, real prototype, open work.</h2>
+            Discord
+          </a>
         </div>
 
-        <div className="content-columns">
-          <div className="prose-stack">
-            {homepageFacts.map((fact) => (
-              <p key={fact}>{fact}</p>
-            ))}
-          </div>
-
-          <ol className="plain-steps">
-            {buildPlan.map((step) => (
-              <li key={step}>{step}</li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
-      <section className="site-shell docs-river" id="docs">
-        <div className="section-heading section-heading--tight">
-          <p className="eyebrow">Documentation on the site</p>
-          <h2>Read the plan without digging through jargon.</h2>
-          <p className="section-copy">
-            The docs explain the same simple idea from different angles: Nqita should run locally,
-            stay visible, respect permissions, and keep the sprite behavior tied to the same runtime
-            state as the chat and tools.
-          </p>
-        </div>
-
-        <div className="docs-list">
-          {documentationLinks.map((link) => (
-            <a
-              key={link.href}
-              className="doc-row"
-              href={link.href}
-              target="_blank"
-              rel="noreferrer"
-            >
-              <span className="doc-row__title">{link.title}</span>
-              <span className="doc-row__body">{link.description}</span>
-            </a>
-          ))}
-        </div>
+        <a className="scroll-cue" href="#sprites">
+          scroll down
+        </a>
       </section>
 
       <section className="site-shell sprite-river" id="sprites">
-        <div className="section-heading section-heading--tight">
+        <div className="section-heading section-heading--center">
           <p className="eyebrow">Potential sprites</p>
-          <h2>Potential sprites.</h2>
+          <h2>Potential sprites</h2>
         </div>
 
-        <div className="sprite-gallery">
-          {uniqueSprites.map((sprite, index) => (
-            <div key={sprite.id} className="sprite-stage-card" aria-label={`Potential sprite ${index + 1}`}>
+        <div className="sprite-gallery sprite-gallery--wide">
+          {spriteOptions.map((sprite, index) => (
+            <div
+              key={sprite.id}
+              className={`sprite-stage-card sprite-stage-card--v${(index % 3) + 1}`}
+              aria-label={`Potential sprite ${index + 1}`}
+            >
+              <div className="sprite-stage-card__glow" aria-hidden="true" />
               <img className="sprite-stage-card__image" src={sprite.src} alt={sprite.alt} />
             </div>
           ))}
         </div>
       </section>
 
-      <footer className="site-shell site-footer">
-        <div>
-          <strong>Nqita</strong>
-          <p>Open source desktop companion by WokSpec.</p>
+      <section className="site-shell story-river" id="about">
+        <div className="section-heading section-heading--center">
+          <p className="eyebrow">What is going on</p>
+          <h2>A calmer, clearer version of the project.</h2>
         </div>
 
-        <div className="site-footer__links">
-          <a href="https://github.com/ws-nqita" target="_blank" rel="noreferrer">
-            GitHub
-          </a>
-          <a href="https://github.com/ws-nqita/nqita-cli" target="_blank" rel="noreferrer">
-            nqita-cli
-          </a>
-          <Link href="/docs">Docs</Link>
-          <Link href="/contribute">Contribute</Link>
+        <div className="story-layout">
+          <article className="story-card story-card--large">
+            <p>
+              Nqita is an open source desktop companion by WokSpec. The goal is simple: make a
+              character that can live on your computer and feel present without feeling annoying.
+            </p>
+            <p>
+              The real thing is still being built. What works today is the CLI and local runtime.
+              That is the starting point, not the final shape.
+            </p>
+          </article>
+
+          <article className="story-card">
+            <h3>Where help matters most</h3>
+            <p>
+              Pixel art, animation, art direction, visual design, and motion are some of the
+              biggest open needs right now.
+            </p>
+          </article>
+
+          <article className="story-card">
+            <h3>Open source scope</h3>
+            <p>
+              There is room for artists, designers, frontend people, and systems developers. If
+              you can help shape how this looks, moves, or behaves, that work matters.
+            </p>
+          </article>
+
+          <article className="story-card">
+            <h3>Where to jump in</h3>
+            <p>
+              Start in the main GitHub org. The live prototype repo is{' '}
+              <a href="https://github.com/ws-nqita/nqita-cli" target="_blank" rel="noreferrer">
+                nqita-cli
+              </a>
+              . The art side especially needs people.
+            </p>
+          </article>
         </div>
-      </footer>
+      </section>
     </main>
   );
 }

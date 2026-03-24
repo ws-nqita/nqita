@@ -32,68 +32,48 @@ export const spriteOptions: SpriteOption[] = [
     alt: 'Potential Nqita sprite candidate 4',
   },
   {
-    id: 'chibi-rotator',
-    src: '/nqita-sprites/candidates/chibi-rotator.gif',
-    alt: 'Potential Nqita sprite candidate 5',
-  },
-  {
     id: 'computer-head',
     src: '/nqita-sprites/candidates/computer-head.gif',
-    alt: 'Potential Nqita sprite candidate 6',
+    alt: 'Potential Nqita sprite candidate 5',
   },
   {
     id: 'monitor-body',
     src: '/nqita-sprites/candidates/monitor-body.gif',
-    alt: 'Potential Nqita sprite candidate 7',
+    alt: 'Potential Nqita sprite candidate 6',
   },
   {
     id: 'walk-cycle',
     src: '/nqita-sprites/candidates/walk-cycle.gif',
-    alt: 'Potential Nqita sprite candidate 8',
+    alt: 'Potential Nqita sprite candidate 7',
   },
 ];
 
 export const homepageFacts = [
-  'Nqita is being built as a local desktop companion by WokSpec, not a chatbot trapped in a browser tab.',
-  'The current public prototype is the CLI stack: a local daemon, terminal chat flow, and a sprite watcher that follows runtime state.',
-  'The long-term goal is a Windows-first overlay that can stay visible on your desktop, react carefully, and show what it is doing.',
+  'Nqita is an open source desktop companion by WokSpec.',
+  'Right now the working public prototype is the CLI and local daemon.',
+  'The long goal is a character that can live on your desktop and react in a way that feels calm, useful, and human.',
 ];
 
 export const buildPlan = [
-  'A local daemon owns chat, memory, permissions, and state.',
-  'A desktop overlay renders the pixel character without blocking your work.',
-  'The visible sprite, bubble, and logs should match the same runtime state instead of drifting apart.',
+  'Keep it local.',
+  'Make it clear what it is doing.',
+  'Make the art and motion feel right.',
 ];
 
 export const documentationLinks: DocLink[] = [
   {
-    title: 'Nqita v1 index',
-    href: 'https://github.com/ws-nqita/nqita/blob/main/docs/NQITA_V1_INDEX.md',
-    description: 'Start here for the plain order of the core docs and the scope of version one.',
+    title: 'Main GitHub org',
+    href: 'https://github.com/ws-nqita',
+    description: 'Start here for the main project and public repos.',
   },
   {
-    title: 'Architecture v1',
-    href: 'https://github.com/ws-nqita/nqita/blob/main/docs/ARCHITECTURE_V1.md',
-    description: 'See how the daemon, overlay, memory, and renderer are meant to fit together.',
-  },
-  {
-    title: 'Sprite system',
-    href: 'https://github.com/ws-nqita/nqita/blob/main/docs/SPRITE_SYSTEM.md',
-    description: 'Read the sprite format, rendering rules, and asset requirements for artists and implementers.',
-  },
-  {
-    title: 'Agent runtime',
-    href: 'https://github.com/ws-nqita/nqita/blob/main/docs/AGENT_RUNTIME.md',
-    description: 'Read how the runtime is supervised, how it communicates, and how it recovers.',
-  },
-  {
-    title: 'Roadmap',
-    href: 'https://github.com/ws-nqita/nqita/blob/main/docs/ROADMAP.md',
-    description: 'See what is planned next without losing the current architecture contract.',
-  },
-  {
-    title: 'nqita-cli README',
+    title: 'nqita-cli repo',
     href: 'https://github.com/ws-nqita/nqita-cli',
-    description: 'Use the live CLI prototype to understand what already runs today.',
+    description: 'This is the runnable public prototype today.',
+  },
+  {
+    title: 'Sprite system doc',
+    href: 'https://github.com/ws-nqita/nqita/blob/main/docs/SPRITE_SYSTEM.md',
+    description: 'Best starting point if you want to help with art and animation.',
   },
 ];
