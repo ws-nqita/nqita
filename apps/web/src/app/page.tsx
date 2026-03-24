@@ -10,6 +10,8 @@ const pixelFont = Press_Start_2P({
   display: 'swap',
 });
 
+const backgroundCells = Array.from({ length: 36 }, (_, index) => index);
+
 function GitHubIcon() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -54,8 +56,8 @@ export default function HomePage() {
       root.style.setProperty('--cursor-y', `${event.clientY}px`);
       root.style.setProperty('--tilt-x', `${(-yRatio * 8).toFixed(2)}deg`);
       root.style.setProperty('--tilt-y', `${(xRatio * 8).toFixed(2)}deg`);
-      root.style.setProperty('--scene-shift-x', `${(xRatio * 12).toFixed(2)}px`);
-      root.style.setProperty('--scene-shift-y', `${(yRatio * 10).toFixed(2)}px`);
+      root.style.setProperty('--scene-shift-x', `${(xRatio * 10).toFixed(2)}px`);
+      root.style.setProperty('--scene-shift-y', `${(yRatio * 8).toFixed(2)}px`);
     };
 
     window.addEventListener('mousemove', handleMove, { passive: true });
@@ -87,53 +89,22 @@ export default function HomePage() {
 
   return (
     <main className={`site-page home-page ${pixelFont.className}`}>
+      <div className="home-grid-glow" aria-hidden="true">
+        {backgroundCells.map((cell) => (
+          <span key={cell} className={`home-grid-glow__cell home-grid-glow__cell--${cell % 6}`} />
+        ))}
+      </div>
+
       <section className="home-shell hero-home">
-        <div className="workbench-scene" aria-hidden="true">
-          <div className="workbench-stage">
-            <div className="workbench-wall" />
-            <div className="workbench-floor" />
-            <div className="workbench-sheet workbench-sheet--left">
-              <span />
-              <span />
-              <span />
-            </div>
-            <div className="workbench-sheet workbench-sheet--right">
-              <span />
-              <span />
-              <span />
-            </div>
-            <div className="workbench-tape workbench-tape--top-left" />
-            <div className="workbench-tape workbench-tape--top-right" />
-            <div className="workbench-tape workbench-tape--mid-left" />
-            <div className="workbench-tape workbench-tape--mid-right" />
-            <div className="workbench-strip workbench-strip--left" />
-            <div className="workbench-strip workbench-strip--right" />
-            <div className="workbench-cluster workbench-cluster--left">
-              <span />
-              <span />
-              <span />
-              <span />
-            </div>
-            <div className="workbench-cluster workbench-cluster--right">
-              <span />
-              <span />
-              <span />
-              <span />
-            </div>
-            <div className="workbench-table">
-              <span className="workbench-table__top" />
-              <span className="workbench-table__pad" />
-              <span className="workbench-table__glass" />
-              <span className="workbench-table__tool workbench-table__tool--left" />
-              <span className="workbench-table__tool workbench-table__tool--right" />
-            </div>
-            <div className="workbench-note workbench-note--left" />
-            <div className="workbench-note workbench-note--right" />
-            <div className="workbench-spark workbench-spark--a" />
-            <div className="workbench-spark workbench-spark--b" />
-            <div className="workbench-spark workbench-spark--c" />
-            <div className="workbench-spark workbench-spark--d" />
-          </div>
+        <div className="saas-stage" aria-hidden="true">
+          <div className="saas-stage__back" />
+          <div className="saas-stage__platform" />
+          <div className="saas-stage__deck" />
+          <div className="saas-stage__column saas-stage__column--left" />
+          <div className="saas-stage__column saas-stage__column--right" />
+          <div className="saas-stage__cube saas-stage__cube--left" />
+          <div className="saas-stage__cube saas-stage__cube--center" />
+          <div className="saas-stage__cube saas-stage__cube--right" />
         </div>
 
         <div className="hero-home__content">
@@ -146,7 +117,7 @@ export default function HomePage() {
               <DiscordIcon />
             </a>
           </div>
-          <a className="hero-home__jump" href="#sprites" aria-label="Scroll to sprite showcase">
+          <a className="hero-home__jump" href="#sprites" aria-label="Scroll to sprite collection">
             <span />
             <span />
             <span />
@@ -155,71 +126,64 @@ export default function HomePage() {
       </section>
 
       <section className="home-shell home-section" id="sprites">
-        <div className="sprite-viewer">
-          <div className="sprite-viewer__panel">
-            <div className="sprite-viewer__scene" aria-hidden="true">
-              <span className="sprite-viewer__matte" />
-              <span className="sprite-viewer__light" />
-              <span className="sprite-viewer__frame sprite-viewer__frame--top" />
-              <span className="sprite-viewer__frame sprite-viewer__frame--bottom" />
-              <span className="sprite-viewer__frame sprite-viewer__frame--left" />
-              <span className="sprite-viewer__frame sprite-viewer__frame--right" />
-              <span className="sprite-viewer__grid" />
-              <span className="sprite-viewer__cell sprite-viewer__cell--left" />
-              <span className="sprite-viewer__cell sprite-viewer__cell--right" />
-              <span className="sprite-viewer__sheet sprite-viewer__sheet--one" />
-              <span className="sprite-viewer__sheet sprite-viewer__sheet--two" />
-              <span className="sprite-viewer__sheet sprite-viewer__sheet--three" />
-              <span className="sprite-viewer__pixel sprite-viewer__pixel--a" />
-              <span className="sprite-viewer__pixel sprite-viewer__pixel--b" />
-              <span className="sprite-viewer__pixel sprite-viewer__pixel--c" />
-              <span className="sprite-viewer__pixel sprite-viewer__pixel--d" />
+        <div className="sprite-module">
+          <div className="sprite-module__title">SPRITE COLLECTION</div>
+          <div className="sprite-viewer">
+            <div className="sprite-viewer__panel">
+              <div className="sprite-viewer__scene" aria-hidden="true">
+                <span className="sprite-viewer__wall" />
+                <span className="sprite-viewer__floor" />
+                <span className="sprite-viewer__pedestal" />
+                <span className="sprite-viewer__pedestal-top" />
+                <span className="sprite-viewer__beam" />
+                <span className="sprite-viewer__dock sprite-viewer__dock--left" />
+                <span className="sprite-viewer__dock sprite-viewer__dock--right" />
+                <span className="sprite-viewer__rail sprite-viewer__rail--top" />
+                <span className="sprite-viewer__rail sprite-viewer__rail--bottom" />
+                <span className="sprite-viewer__mini sprite-viewer__mini--left-top" />
+                <span className="sprite-viewer__mini sprite-viewer__mini--left-bottom" />
+                <span className="sprite-viewer__mini sprite-viewer__mini--right-top" />
+                <span className="sprite-viewer__mini sprite-viewer__mini--right-bottom" />
+              </div>
+
+              <button
+                className="sprite-viewer__hover sprite-viewer__hover--left"
+                type="button"
+                onClick={() => go(-1)}
+                aria-label="Previous sprite"
+              >
+                <span className="sprite-viewer__hover-label">
+                  <i />
+                  previous
+                </span>
+              </button>
+
+              <button
+                className="sprite-viewer__hover sprite-viewer__hover--right"
+                type="button"
+                onClick={() => go(1)}
+                aria-label="Next sprite"
+              >
+                <span className="sprite-viewer__hover-label">
+                  <i />
+                  next
+                </span>
+              </button>
+
+              <img className="sprite-viewer__sprite sprite-viewer__sprite--ghost-left" src={previousSprite.src} alt="" aria-hidden="true" />
+              <img className="sprite-viewer__sprite" src={activeSprite.src} alt={activeSprite.alt} />
+              <img className="sprite-viewer__sprite sprite-viewer__sprite--ghost-right" src={nextSprite.src} alt="" aria-hidden="true" />
             </div>
-
-            <button
-              className="sprite-viewer__hover sprite-viewer__hover--left"
-              type="button"
-              onClick={() => go(-1)}
-              aria-label="Previous sprite"
-            >
-              <span className="sprite-viewer__hover-label">
-                <i />
-                previous
-              </span>
-            </button>
-
-            <button
-              className="sprite-viewer__hover sprite-viewer__hover--right"
-              type="button"
-              onClick={() => go(1)}
-              aria-label="Next sprite"
-            >
-              <span className="sprite-viewer__hover-label">
-                <i />
-                next
-              </span>
-            </button>
-
-            <img className="sprite-viewer__sprite sprite-viewer__sprite--ghost-left" src={previousSprite.src} alt="" aria-hidden="true" />
-            <img className="sprite-viewer__sprite" src={activeSprite.src} alt={activeSprite.alt} />
-            <img className="sprite-viewer__sprite sprite-viewer__sprite--ghost-right" src={nextSprite.src} alt="" aria-hidden="true" />
           </div>
         </div>
       </section>
 
       <section className="home-shell home-section home-section--info">
-        <div className="home-info">
-          <p>Open source desktop companion.</p>
-          <p>GitHub first. Local first.</p>
-          <p>We need pixel art, motion, frontend.</p>
-          <div className="home-info__links">
-            <a href="https://github.com/ws-nqita" target="_blank" rel="noreferrer">
-              ws-nqita
-            </a>
-            <a href="https://github.com/ws-nqita/nqita-cli" target="_blank" rel="noreferrer">
-              nqita-cli
-            </a>
-          </div>
+        <div className="help-module">
+          <p>WE NEED HELP!</p>
+          <p>DEVELOPERS AND ARTISTS.</p>
+          <p>ANYONE.</p>
+          <p>OPEN SOURCE.</p>
         </div>
       </section>
     </main>
