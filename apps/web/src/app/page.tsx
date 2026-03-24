@@ -52,10 +52,10 @@ export default function HomePage() {
 
       root.style.setProperty('--cursor-x', `${event.clientX}px`);
       root.style.setProperty('--cursor-y', `${event.clientY}px`);
-      root.style.setProperty('--tilt-x', `${(-yRatio * 16).toFixed(2)}deg`);
-      root.style.setProperty('--tilt-y', `${(xRatio * 16).toFixed(2)}deg`);
-      root.style.setProperty('--scene-shift-x', `${(xRatio * 24).toFixed(2)}px`);
-      root.style.setProperty('--scene-shift-y', `${(yRatio * 18).toFixed(2)}px`);
+      root.style.setProperty('--tilt-x', `${(-yRatio * 10).toFixed(2)}deg`);
+      root.style.setProperty('--tilt-y', `${(xRatio * 10).toFixed(2)}deg`);
+      root.style.setProperty('--scene-shift-x', `${(xRatio * 14).toFixed(2)}px`);
+      root.style.setProperty('--scene-shift-y', `${(yRatio * 12).toFixed(2)}px`);
     };
 
     window.addEventListener('mousemove', handleMove, { passive: true });
@@ -88,118 +88,55 @@ export default function HomePage() {
   return (
     <main className={`site-page home-page ${pixelFont.className}`}>
       <section className="home-shell hero-home">
-        <div className="hero-home__scene" aria-hidden="true">
-          <div className="scene-camera">
-            <div className="scene-room">
-              <div className="scene-floor" />
-              <div className="scene-floor-glow" />
-              <div className="scene-wall scene-wall--back" />
-              <div className="scene-wall scene-wall--left" />
-              <div className="scene-wall scene-wall--right" />
-              <div className="scene-skyline scene-skyline--left" />
-              <div className="scene-skyline scene-skyline--center" />
-              <div className="scene-skyline scene-skyline--right" />
-              <div className="scene-beam scene-beam--left" />
-              <div className="scene-beam scene-beam--right" />
-              <div className="scene-light-trail scene-light-trail--left" />
-              <div className="scene-light-trail scene-light-trail--right" />
-              <div className="scene-arch scene-arch--left" />
-              <div className="scene-arch scene-arch--right" />
-              <div className="scene-platform scene-platform--rear" />
-              <div className="scene-platform scene-platform--front" />
-              <div className="scene-gate scene-gate--left">
-                <span />
-                <span />
-                <span />
-              </div>
-              <div className="scene-gate scene-gate--right">
-                <span />
-                <span />
-                <span />
-              </div>
-              <div className="scene-console">
-                <span className="scene-console__screen" />
-                <span className="scene-console__base" />
-              </div>
-              <div className="scene-tower scene-tower--left">
-                <span />
-                <span />
-                <span />
-              </div>
-              <div className="scene-tower scene-tower--right">
-                <span />
-                <span />
-                <span />
-              </div>
-              <div className="scene-terminal scene-terminal--left">
-                <span />
-                <span />
-              </div>
-              <div className="scene-terminal scene-terminal--right">
-                <span />
-                <span />
-              </div>
-              <div className="pixel-cube pixel-cube--stack-a pixel-cube--tall">
-                <span />
-                <span />
-                <span />
-              </div>
-              <div className="pixel-cube pixel-cube--stack-b">
-                <span />
-                <span />
-                <span />
-              </div>
-              <div className="pixel-cube pixel-cube--stack-c pixel-cube--wide">
-                <span />
-                <span />
-                <span />
-              </div>
-              <div className="pixel-cube pixel-cube--stack-d">
-                <span />
-                <span />
-                <span />
-              </div>
-              <div className="pixel-cube pixel-cube--stack-e pixel-cube--small">
-                <span />
-                <span />
-                <span />
-              </div>
-              <div className="pixel-cube pixel-cube--stack-f pixel-cube--small">
-                <span />
-                <span />
-                <span />
-              </div>
-              <div className="pixel-pillar pixel-pillar--left">
-                <span />
-                <span />
-                <span />
-              </div>
-              <div className="pixel-pillar pixel-pillar--right">
-                <span />
-                <span />
-                <span />
-              </div>
-              <div className="pixel-steps pixel-steps--left">
-                <span />
-                <span />
-                <span />
-              </div>
-              <div className="pixel-steps pixel-steps--right">
-                <span />
-                <span />
-                <span />
-              </div>
-              <div className="scene-drone scene-drone--left">
-                <span />
-                <span />
-                <span />
-              </div>
-              <div className="scene-drone scene-drone--right">
-                <span />
-                <span />
-                <span />
-              </div>
+        <div className="atelier-scene" aria-hidden="true">
+          <div className="atelier-room">
+            <div className="atelier-wall" />
+            <div className="atelier-floor" />
+            <div className="atelier-rug" />
+            <div className="atelier-pixels atelier-pixels--left" />
+            <div className="atelier-pixels atelier-pixels--right" />
+            <div className="atelier-strip atelier-strip--left">
+              <span />
+              <span />
+              <span />
+              <span />
             </div>
+            <div className="atelier-strip atelier-strip--right">
+              <span />
+              <span />
+              <span />
+              <span />
+            </div>
+            <div className="atelier-board atelier-board--left">
+              <span />
+              <span />
+              <span />
+            </div>
+            <div className="atelier-board atelier-board--right">
+              <span />
+              <span />
+              <span />
+            </div>
+            <div className="atelier-cabinet atelier-cabinet--left">
+              <span />
+              <span />
+              <span />
+            </div>
+            <div className="atelier-cabinet atelier-cabinet--right">
+              <span />
+              <span />
+              <span />
+            </div>
+            <div className="atelier-desk">
+              <span className="atelier-desk__surface" />
+              <span className="atelier-desk__screen" />
+              <span className="atelier-desk__lamp" />
+              <span className="atelier-desk__mat" />
+            </div>
+            <div className="atelier-spark atelier-spark--a" />
+            <div className="atelier-spark atelier-spark--b" />
+            <div className="atelier-spark atelier-spark--c" />
+            <div className="atelier-spark atelier-spark--d" />
           </div>
         </div>
 
@@ -225,32 +162,16 @@ export default function HomePage() {
         <div className="sprite-viewer">
           <div className="sprite-viewer__panel">
             <div className="sprite-viewer__scene" aria-hidden="true">
-              <span className="sprite-viewer__halo" />
-              <span className="sprite-viewer__scan sprite-viewer__scan--one" />
-              <span className="sprite-viewer__scan sprite-viewer__scan--two" />
-              <span className="sprite-viewer__plane sprite-viewer__plane--back" />
-              <span className="sprite-viewer__plane sprite-viewer__plane--left" />
-              <span className="sprite-viewer__plane sprite-viewer__plane--right" />
-              <span className="sprite-viewer__plane sprite-viewer__plane--floor" />
-              <span className="sprite-viewer__plane sprite-viewer__plane--ceiling" />
-              <span className="sprite-viewer__rail sprite-viewer__rail--left" />
-              <span className="sprite-viewer__rail sprite-viewer__rail--right" />
-              <span className="sprite-viewer__totem sprite-viewer__totem--left" />
-              <span className="sprite-viewer__totem sprite-viewer__totem--right" />
-              <span className="sprite-viewer__portal sprite-viewer__portal--rear" />
-              <span className="sprite-viewer__pedestal" />
-              <span className="sprite-viewer__pedestal-top" />
-              <span className="sprite-viewer__pedestal-shadow" />
-              <span className="sprite-viewer__frame sprite-viewer__frame--left" />
-              <span className="sprite-viewer__frame sprite-viewer__frame--right" />
-              <span className="sprite-viewer__cube sprite-viewer__cube--left" />
-              <span className="sprite-viewer__cube sprite-viewer__cube--right" />
-              <span className="sprite-viewer__cube sprite-viewer__cube--rear-left" />
-              <span className="sprite-viewer__cube sprite-viewer__cube--rear-right" />
-              <span className="sprite-viewer__spark sprite-viewer__spark--a" />
-              <span className="sprite-viewer__spark sprite-viewer__spark--b" />
-              <span className="sprite-viewer__spark sprite-viewer__spark--c" />
-              <span className="sprite-viewer__spark sprite-viewer__spark--d" />
+              <span className="sprite-viewer__backdrop" />
+              <span className="sprite-viewer__light" />
+              <span className="sprite-viewer__stitch sprite-viewer__stitch--top" />
+              <span className="sprite-viewer__stitch sprite-viewer__stitch--bottom" />
+              <span className="sprite-viewer__slot sprite-viewer__slot--left" />
+              <span className="sprite-viewer__slot sprite-viewer__slot--right" />
+              <span className="sprite-viewer__sheet sprite-viewer__sheet--one" />
+              <span className="sprite-viewer__sheet sprite-viewer__sheet--two" />
+              <span className="sprite-viewer__sheet sprite-viewer__sheet--three" />
+              <span className="sprite-viewer__grid" />
             </div>
 
             <button
@@ -287,7 +208,7 @@ export default function HomePage() {
       <section className="home-shell home-section home-section--info">
         <div className="home-info">
           <p>Open source desktop companion.</p>
-          <p>CLI first. Art and motion next.</p>
+          <p>We need pixel art, motion, frontend.</p>
           <a href="https://github.com/ws-nqita/nqita-cli" target="_blank" rel="noreferrer">
             nqita-cli
           </a>
